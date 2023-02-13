@@ -1,11 +1,12 @@
 import { React, useState, useEffect } from 'react'
 import './sellerhome.css'
-// import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 // import logo1 from '../../../logo1.svg'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button'
 import { TiArrowSortedDown } from 'react-icons/ti'
 import SellerButton from './SellerButton'
+import { FaClipboardList } from 'react-icons/fa'
 // import { RiSearch2Line } from 'react-icons/ri'
 import axios from 'axios'
 
@@ -26,6 +27,8 @@ import sellerlistIcon from '../image/sellerlistIcon.svg'
 import sellerorderIcon from '../image/sellerorderIcon.svg'
 
 function SellerHome() {
+  const navigate = useNavigate()
+
   let [UserData, setUserData] = useState({}) //記錄數值
   let [UserOldDatas, setUserOldDatas] = useState({}) //原本的數據
   let [UserOrders, setUserOrders] = useState([]) //記錄使用者訂單
@@ -187,7 +190,7 @@ function SellerHome() {
   async function handleProductSubmit(e) {
     console.log('handleProductSubmit')
     // 關閉表單的預設行為
-    e.preventDefault()
+    // e.preventDefault()
     let formData = new FormData()
     formData.append('name', productInputData.name)
     formData.append('photo', productInputData.photo)
@@ -206,16 +209,49 @@ function SellerHome() {
       // withCredentials: true,
     )
     console.log(response.data)
+    alert('圖片上傳成功')
   }
 
   console.log(UserData)
   console.log(sellerProducts.data)
   console.log(sellerOrders.data)
   console.log(sellerOrder)
-  //  // ================sellerProduct========================
+  // ================sellerProduct商品管理========================
+  // let [sellerProducts, setSellerProducts] = useState([]) //記錄使用者圖畫
+  //此賣家的全部圖片
+  console.log(sellerProducts.data)
+  const [selectedSellerOrder, setSelectedSellerOrder] = useState({
+    name: '',
+    price: '',
+  })
 
-  // ================sellerOrder========================
-  
+  console.log(selectedSellerOrder)
+
+  async function submitSelectedSellerOrder(selectedSellerOrder) {
+    const response = await fetch(
+      `http://localhost:3001/product/${selectedSellerOrder.id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedSellerOrder),
+      }
+    )
+    // setSelectedSellerOrder()
+
+    if (!response.ok) {
+      throw new Error('Failed to update seller order')
+    }
+    window.location.reload()
+    // window.location.replace("http://localhost:3000/users/ArtistLoginTo");
+    // navigate('/users/ArtistLoginTo')
+  }
+
+  // ================sellerOrder訂單資訊========================
+
+  const [selectedOrder, setSelectedOrder] = useState(null)
+
   let filteredOrders = []
   if (
     sellerOrders &&
@@ -225,6 +261,7 @@ function SellerHome() {
     sellerProducts.data &&
     sellerProducts.data.length
   ) {
+    //賣家訂單的全部product_id去比對產品id
     filteredOrders = sellerOrders.data.filter((order) => {
       return sellerProducts.data.some(
         (product) => product.id === order.product_id
@@ -236,10 +273,7 @@ function SellerHome() {
   }
   console.log(filteredOrders)
 
-
   // ================sellerOrder END========================
-
-  const [showText, setShowText] = useState(false)
 
   return (
     <>
@@ -715,7 +749,7 @@ function SellerHome() {
                       sellerProducts.data &&
                       sellerProducts.data.length > 0 &&
                       sellerProducts.data.map((seller_order, index) => (
-                        <a
+                        <div
                           className="SellerProduct__item col"
                           key={seller_order.id}
                         >
@@ -725,21 +759,88 @@ function SellerHome() {
                             alt={seller_order.name}
                           />
                           <div className="SellerProduct__card-text">
-                            <input
-                              className="SellerProduct__productId"
-                              type="text" 
-                              // value={seller_order.name}
-                            >
-                              {/* {seller_order.name} */}
-                            </input>
-                            <p className="SellerProduct__productId">
+                            {selectedSellerOrder.id === seller_order.id && (
+                              <>
+                                <input
+                                  className="SellerProduct__productId"
+                                  type="text"
+                                  style={{ border: 'none', width: '200px' }}
+                                  value={selectedSellerOrder.name}
+                                  onChange={(e) =>
+                                    setSelectedSellerOrder({
+                                      ...selectedSellerOrder,
+                                      name: e.target.value,
+                                    })
+                                  }
+                                />
+                                <input
+                                  className="SellerProduct__price"
+                                  type="number"
+                                  style={{ border: 'none', width: '200px' }}
+                                  value={selectedSellerOrder.price}
+                                  onChange={(e) =>
+                                    setSelectedSellerOrder({
+                                      ...selectedSellerOrder,
+                                      price: e.target.value,
+                                    })
+                                  }
+                                />
+                              </>
+                            )}
+                            {selectedSellerOrder.id !== seller_order.id && (
+                              <>
+                                <h5 className="SellerProduct__productId">
+                                  作品名稱:{seller_order.name}
+                                </h5>
+                                <div className='m-1'>
+                                  <p className="SellerProduct__price">
+                                    金額:{seller_order.price}
+                                  </p>
+                                </div>
+                              </>
+                            )}
+
+                            {/* {selectedSellerOrder.id === seller_order.id && (
+                              <input
+                                className="SellerProduct__productId"
+                                type="text"
+                                value={selectedSellerOrder.name}
+                                onChange={(e) =>
+                                  setSelectedSellerOrder({
+                                    ...selectedSellerOrder,
+                                    name: e.target.value,
+                                  })
+                                }
+                              />
+                            )}
+                            {selectedSellerOrder.id !== seller_order.id && (
+                              <p className="SellerProduct__productId">
+                                {seller_order.name}
+                              </p>
+                            )} */}
+
+                            {/* <p className="SellerProduct__productId">
                               {seller_order.name}
-                            </p>
-                            <p className="SellerProduct__price">
+                            </p> */}
+                            {/* <p className="SellerProduct__price">
                               金額:{seller_order.price}
-                            </p>
+                            </p> */}
                           </div>
-                        </a>
+                          <Button
+                            className="m-1"
+                            style={{ background: 'black' }}
+                            onClick={() => setSelectedSellerOrder(seller_order)}
+                          >
+                            編輯
+                          </Button>
+                          <Button
+                            onClick={() =>
+                              submitSelectedSellerOrder(selectedSellerOrder)
+                            }
+                          >
+                            確定
+                          </Button>
+                        </div>
                       ))}
                   </div>
                 </div>
@@ -817,35 +918,75 @@ function SellerHome() {
                 <tbody>
                   {filteredOrders &&
                     filteredOrders.length > 0 &&
-                    filteredOrders.map((filteredOrders, index) => (
-                      <tr key={filteredOrders.order_id}>
-                        <td>202302000{filteredOrders.order_id}</td>
+                    filteredOrders.map((order, index) => (
+                      <tr key={order.order_id}>
+                        <td>202302000{order.order_id}</td>
                         <td>
-                          {filteredOrders.order_status === 1
+                          {order.order_status === 1
                             ? '待出貨'
-                            : filteredOrders.order_status === 2
+                            : order.order_status === 2
                             ? '出貨中'
                             : '已送達'}
                         </td>
-                        <td>{filteredOrders.order_price}2000</td>
-                        <td>{filteredOrders.order_date.slice(0, 10)}</td>
+                        <td>{order.order_price}2000</td>
+                        <td>{order.order_date.slice(0, 10)}</td>
                         <td className="sellerorder__main_detil_count">
-                          {filteredOrders.amount}
+                          {order.amount}
                         </td>
                         <td className="sellerorder__main_detil_button">
                           <Button
-                            value={filteredOrders.order_id}
+                            value={order.order_id}
                             variant="dark"
-                            onClick={() => setShowText(filteredOrders.order_id)}
+                            onClick={() => setSelectedOrder(order)}
                           >
-                            詳細資料
+                            訂單明細
                           </Button>
                         </td>
                       </tr>
                     ))}
-                  <div>{showText && <div>詳細資訊：{showText}</div>}</div>
+                    <div>
+                  </div>
                 </tbody>
               </table>
+              <div>
+                    {' '}
+                    {selectedOrder && (
+                      <div className='sellerorder_detail_wrap'>
+                        <h5 className='mt-1'><FaClipboardList className='me-2 mb-1'/>訂單明細</h5>
+                        <table className='sellerorder_detail_wrap_table'>  
+
+                        <tr>
+                        <th>訂單ID</th>
+                        <th>訂單狀態</th>
+                        <th>金額</th>
+                        <th>日期</th>
+                        <th>數量</th>
+                        <th>地址</th>
+                        <th>產品編號</th>
+                        <th>總金額</th>
+                        <th>買家編號</th>
+                        </tr>    
+
+                        <tr>
+                        <td>{selectedOrder.order_id}</td>
+                        <td>  {selectedOrder.order_status === 1
+                          ? '待出貨'
+                          : selectedOrder.order_status === 2
+                          ? '出貨中'
+                          : '已送達'}</td>
+                        <td>{selectedOrder.order_price}2000</td>
+                        <td>{selectedOrder.order_date.slice(0, 10)}</td>
+                        <td>{selectedOrder.amount}</td>
+                        <td>{selectedOrder.send_address}</td>
+                        <td>{selectedOrder.product_id}</td>
+                        <td>{selectedOrder.total}</td>
+                        <td>{selectedOrder.user_id}</td>
+                        </tr>   
+
+                        </table>
+                      </div>
+                    )}
+                    </div>
             </div>
           </div>
         </div>

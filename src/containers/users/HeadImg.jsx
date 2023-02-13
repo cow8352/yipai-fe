@@ -20,7 +20,40 @@ function HeadImg(user) {
     let [UserOldDatas, setUserOldDatas] = useState({}); //原本的數據
     let [UserOrders, setUserOrders] = useState([]); //記錄使用者訂單
     let [UserImg, setUserImg] = useState([]); //記錄舊圖網址
-
+    const [UserInputAdd, setUserInputAdd] = useState({
+        //紀錄新地址
+        city: "",
+        township: "",
+        // adjacent:'',
+        rode: "",
+        // postalCode:''
+    });
+    const handleChange1 = (event) => {
+        setUserInputData({
+            ...UserInputAdd,
+            [event.target.name]: event.target.value,
+        });
+    };
+    let UserFormDataAdd = new FormData();
+    UserFormDataAdd.append("username", UserInputAdd.city);
+    UserFormDataAdd.append("account", UserInputAdd.township);
+    UserFormDataAdd.append("email", UserInputAdd.rode);
+    UserFormDataAdd.append("usersId", UserData);
+    const handleSubmit1 = (event) => {
+        event.preventDefault();
+        axios
+            .put(
+                `http://localhost:3001/api/members/userAdd`,
+                {
+                    withCredentials: true,
+                },
+                UserFormDataAdd
+            )
+            .then((response) => console.log(response))
+            .catch((error) => console.error(error));
+        console.log("輸入中");
+        alert("更新地址成功");
+    };
     // 只執行一次
     useEffect(() => {
         async function getMember2() {
@@ -44,6 +77,7 @@ function HeadImg(user) {
         }
         getMember2();
     }, []);
+    
     //  記錄輸入的數值
     const [UserInputData, setUserInputData] = useState({
         username: "",
@@ -61,7 +95,7 @@ function HeadImg(user) {
     useEffect(() => {
         console.log(productInputData);
     }, [productInputData]);
-    
+
     // 檔案更新值
     function handleUpload(e) {
         // file input 的值並不是存在 value 欄位裡
@@ -77,12 +111,13 @@ function HeadImg(user) {
         formData.append("photo", productInputData.photo);
         let response = await axios.post(
             "http://localhost:3001/uploadsPhoto/product",
-            formData,{
+            formData,
+            {
                 withCredentials: true,
             }
         );
         console.log(response.data);
-        alert('圖片上傳成功');
+        alert("圖片上傳成功");
     }
     //================================================================
     // 每次輸入後更新
@@ -93,13 +128,13 @@ function HeadImg(user) {
         });
     };
     // 送出輸入資料
-        let UserFormData = new FormData();
-        UserFormData.append("username", UserInputData.username);
-        UserFormData.append("account", UserInputData.account);
-        UserFormData.append("email", UserInputData.email);
-        UserFormData.append("phone", UserInputData.phone);
-        UserFormData.append("photo", productInputData.photo);
-        UserFormData.append("usersId", UserData);
+    let UserFormData = new FormData();
+    UserFormData.append("username", UserInputData.username);
+    UserFormData.append("account", UserInputData.account);
+    UserFormData.append("email", UserInputData.email);
+    UserFormData.append("phone", UserInputData.phone);
+    UserFormData.append("photo", productInputData.photo);
+    UserFormData.append("usersId", UserData);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -113,6 +148,8 @@ function HeadImg(user) {
             )
             .then((response) => console.log(response))
             .catch((error) => console.error(error));
+        console.log("輸入中");
+        alert("更新資料成功");
     };
 
     // 每次輸入後更新
@@ -124,8 +161,15 @@ function HeadImg(user) {
         <div className='_buyLogin_flex'>
             <div className='_buyLogin_RWDflexcol _buyLogin_rwd_flex'>
                 <div className='_buyLogin_flex-re' style={{ marginTop: "1em" }}>
-                <img
-                 src={UserOldDatas && UserOldDatas.user_imageHead && UserOldDatas.user_imageHead.includes("http")?UserOldDatas.user_imageHead:"http://localhost:3001/public/uploads/"+ UserOldDatas.user_imageHead} 
+                    <img
+                        src={
+                            UserOldDatas &&
+                            UserOldDatas.user_imageHead &&
+                            UserOldDatas.user_imageHead.includes("http")
+                                ? UserOldDatas.user_imageHead
+                                : "http://localhost:3001/public/uploads/" +
+                                  UserOldDatas.user_imageHead
+                        }
                         alt='buyHead'
                         className='_buyLogin_headImg'
                     />
@@ -134,8 +178,8 @@ function HeadImg(user) {
                         <div>
                             <input
                                 type='file'
-                                id='imageHead'
-                                name='imageHead'
+                                id='photo'
+                                name='photo'
                                 style={{ display: "none" }}
                                 // value={imgServerUrl}
                                 onChange={handleUpload}
@@ -239,6 +283,7 @@ function HeadImg(user) {
                                         className='_buyLogin_SettingInput'
                                         type='email'
                                         name='email'
+                                        placeholder={UserOldDatas.users_email}
                                         value={UserInputData.email}
                                         onChange={handleChange}
                                         required
@@ -252,6 +297,7 @@ function HeadImg(user) {
                                         className='_buyLogin_SettingInput'
                                         type='tel'
                                         name='phone'
+                                        placeholder={UserOldDatas.users_phone}
                                         value={UserInputData.phone}
                                         onChange={handleChange}
                                         required
@@ -281,12 +327,21 @@ function HeadImg(user) {
                         </div>
                         <div className='_buyLogin_Contentbox'>
                             {/* 右邊表單 */}
-                            <form method='post'>
+                            <form method='post'
+                                name='rightForm'
+                                onSubmit={handleSubmit1}>
                                 <div className=' _buyLogin_flex_content _buyLogin_p1'>
                                     <label className='_buyLogin_h4'>
                                         城市：
                                     </label>
-                                    <select className='_buyLogin_SettingInput'>
+                                    <select
+                                        className='_buyLogin_SettingInput'
+                                        name='city'
+                                        value={UserInputAdd.city}
+                                        onChange={handleChange1}
+                                        placeholder={UserOldDatas.users_city}
+
+                                    >
                                         <option disabled>請選擇城市</option>
                                         <option>桃園市</option>
                                         <option>新北市</option>
@@ -320,6 +375,9 @@ function HeadImg(user) {
                                         className='_buyLogin_SettingInput'
                                         type='text'
                                         name='township'
+                                        placeholder={UserOldDatas.users_township}
+                                        onChange={handleChange1}
+                                        // value={UserInputAdd.township}
                                     ></input>
                                 </div>
                                 <div className=' _buyLogin_flex_content _buyLogin_p1'>
@@ -340,6 +398,9 @@ function HeadImg(user) {
                                         className='_buyLogin_SettingInput'
                                         type='text'
                                         name='rode'
+                                        placeholder={UserOldDatas.users_street}
+                                        // value={UserInputAdd.rode}
+                                        onChange={handleChange1}
                                     ></input>
                                 </div>
 
