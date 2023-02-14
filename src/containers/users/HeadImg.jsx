@@ -437,8 +437,9 @@ function HeadImg(user) {
                                 <th>訂購時間</th>
                                 <th>訂購品項</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                            </thead>
+
+                            <tbody>
                             {UserOrders.map((User_Order) => (
                                 <tr
                                     key={User_Order.order_id}
@@ -446,9 +447,9 @@ function HeadImg(user) {
                                     style={{ borderColor: "#CAB296" }}
                                 >
                                     <td>{User_Order.order_date}</td>
-                                    <td>12,800</td>
-                                    <td>2022/11/02</td>
-                                    <td>1</td>
+                                    <td>{User_Order.total}</td>
+                                    <td>{User_Order.order_date}</td>
+                                    <td>{User_Order.amount}</td>
                                     <td>
                                         <button className='_buyLogin_tableBtn'>
                                             詳細資訊

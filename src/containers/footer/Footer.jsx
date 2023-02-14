@@ -34,9 +34,7 @@ const Footer = () => {
         <div className="yipai__footer-links_logo">
           <img src={yipaiLogo} alt="yipai_logo" />
           <p>
-            藝拍YiPai 版權所有
-            <br />
-            YiPai All rights reserved ©
+          圖片僅供學術使用，如有侵權請告知謝謝
           </p>
         </div>
         <div className="yipai__footer-links_div">
@@ -54,7 +52,7 @@ const Footer = () => {
         <div className="yipai__footer-links_div">
           <h4>聯絡我們</h4>
           <p>Yipai@gmail.com</p>
-          <p>0912-123-321</p>
+          <p>0901-009234</p>
           <p>
             <a
               href="https://zh-tw.facebook.com/"
@@ -79,7 +77,7 @@ const Footer = () => {
       </div>
 
       <div className="yipai__footer-copyright">
-        <p>@2023 YiPai All rights reserved.</p>
+        <p>圖片僅供學術使用，如有侵權請告知謝謝</p>
       </div>
     </div>
   )

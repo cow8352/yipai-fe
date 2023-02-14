@@ -11,7 +11,7 @@
     align-items: flex-end;
 }
 .news__yipai__img{
-    height: 50vh;
+   width: 100vw;
     object-fit:cover;
 }
 
@@ -83,6 +83,11 @@
 .news__google{
     width: 75vw; 
 }
+.news__google_LeafletMap{
+    height: 50vh;
+    width: 100%;
+    margin: auto;
+}
 
 @media screen and (max-width: 990px) {
     .news__text{
@@ -116,6 +121,18 @@
         }
     .news__fw-bold{
         width: 100vw;
+    }
+    .news__row{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 100vw;
+        margin: 0;
+    }
+    .news__google_LeafletMap{
+        height: 50vh;
+        width: 100vw;
+        margin: auto;
     }
         
     }

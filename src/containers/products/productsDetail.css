@@ -115,11 +115,6 @@ p.ProductsDetail_price{
   margin-right: 100px;
 }
 
-
-.ProductsDetail_addCar-bottom{
-  display: none;
-}
-
 .ProductsDetail_carousel-products{
   width: 468px;
   height:570px;
@@ -313,9 +308,6 @@ p.ProductsDetail_article{
     grid-template-columns: 350px 1fr;
   }
  
-  .ProductsDetail_addCar-bottom{
-    display: none;
-  }
   h6 .ProductsDetail_h6{
   
     width:150px;
@@ -389,9 +381,6 @@ p.ProductsDetail_article{
  
 }
 
-  .ProductsDetail_addCar{
-    display: none;
-  }
   .ProductsDetail_addCar-bottom{
     padding: 20px;
     background-color:#C9D7E3 ;
@@ -419,7 +408,7 @@ p.ProductsDetail_article{
                   "ProductsDetail_aside "
                   /* "ProductsDetail_main" */
                   ; /* 2.區域分為4行兩列 */
-    grid-template-rows: 550px 450px 700px 550px ; /* 3.各區域 寬高設置 */
+    grid-template-rows: 550px 550px 700px 550px ; /* 3.各區域 寬高設置 */
     grid-template-columns:100vw ;
   }
   #ProductsDetail_container_fluid{

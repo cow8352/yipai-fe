@@ -10,7 +10,7 @@ import "./buyLogin.css";
 const Login = () => {
     // 登入預設
     const [member, setMember] = useState({
-        account: "cola00981",
+        account: "John",
         password: "00000000",
     });
 

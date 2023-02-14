@@ -109,7 +109,8 @@ const NewsId = () => {
                               newsDetail.news_lng,
                             ]}
                             zoom={22}
-                            style={{ height: "50vh", width: "100%", margin: "auto" }}
+                        
+                            className="news__google_LeafletMap"
                           >    
                             <TileLayer
                               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

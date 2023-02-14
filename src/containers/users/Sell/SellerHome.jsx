@@ -4,9 +4,13 @@ import { useNavigate } from 'react-router-dom'
 // import logo1 from '../../../logo1.svg'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button'
+
+
 import { TiArrowSortedDown } from 'react-icons/ti'
 import SellerButton from './SellerButton'
 import { FaClipboardList } from 'react-icons/fa'
+
+
 // import { RiSearch2Line } from 'react-icons/ri'
 import axios from 'axios'
 
@@ -25,6 +29,7 @@ import sellerpageIcon from '../image/sellerpageIcon.svg'
 import sellerupIcon from '../image/sellerupIcon.svg'
 import sellerlistIcon from '../image/sellerlistIcon.svg'
 import sellerorderIcon from '../image/sellerorderIcon.svg'
+
 
 function SellerHome() {
   const navigate = useNavigate()
@@ -749,7 +754,7 @@ function SellerHome() {
                       sellerProducts.data &&
                       sellerProducts.data.length > 0 &&
                       sellerProducts.data.map((seller_order, index) => (
-                        <div
+                        <a href={`/products/${seller_order.id}`}
                           className="SellerProduct__item col"
                           key={seller_order.id}
                         >
@@ -840,7 +845,7 @@ function SellerHome() {
                           >
                             確定
                           </Button>
-                        </div>
+                        </a>
                       ))}
                   </div>
                 </div>
@@ -1034,7 +1039,9 @@ function SellerHome() {
                   ></input>
                 </div>
               </label>
-              <button onClick={handleSellerPicSubmit}>送出</button>
+              <Button className='_buyLogin_headIcon_button' onClick={handleSellerPicSubmit}>
+              送出
+              </Button>
             </div>
             <ul className="list-unstyled sellerhome__icon ">
               <li className="d-flex">
