@@ -155,8 +155,6 @@ const CartPart2 = () => {
     }, 100);
   }
   
-  
-  
 
   return (
     <div id="login">
