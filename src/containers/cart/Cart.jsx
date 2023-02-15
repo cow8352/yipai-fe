@@ -25,7 +25,7 @@ const Cart = () => {
   const [login, setLogin] = useState(false);
   const [selllogin, setSellLogin] = useState(false);
   const [couponTotal, setCouponTotal] = useState([])
-  console.log('55555555555555',couponTotal)
+  // console.log('55555555555555',couponTotal)
     useEffect(() => {
       // 在 component 初始化的時候跑一次
       // 通常會把去跟後端要資料的動作放在這裡
@@ -55,7 +55,7 @@ const Cart = () => {
         setLogin(false);
       }
       
-      console.log(response.data[0].users_valid_role);
+      // console.log(response.data[0].users_valid_role);
     }
     getMember2();
   }, []);
@@ -77,7 +77,7 @@ const Cart = () => {
   //   s\getSellLogin();
   // }, []);
 
-  console.log(login);
+  // console.log(login);
 
   const {
     cart,
@@ -93,7 +93,7 @@ const Cart = () => {
    
 
   useEffect(() => {
-    console.log("第二個參數是空陣列");
+    // console.log("第二個參數是空陣列");
     // 在 component 初始化的時候跑一次
     // 通常會把去跟後端要資料的動作放在這裡
     async function getProduct() {

@@ -36,12 +36,12 @@ function ArtistDetail() {
     artistProduct()
   }, [])
 
-  console.log(data)
+  // console.log(data)
   let filtered = [...artistProduct]
   filtered = filtered.filter(
     (artistProduct) => artistProduct.artist === data[0].users_name
   )
-  console.log(filtered)
+  // console.log(filtered)
   return (
     <>
       <div>

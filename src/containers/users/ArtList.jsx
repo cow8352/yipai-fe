@@ -9,7 +9,10 @@ import { useAuth } from "../../components/useAuth";
 function ArtList(params) {
     const { auth } = useAuth()
     const [userlike, setUserlike] = useState([]);  
-console.log('-*-*-*-**-*-',userlike)
+    // console.log('-*-*-*-**-*-',userlike)
+    const[like, setLike]= useState(false)
+    // console.log('--------------46',auth)
+
     useEffect(() => {
       async function getUserlike() {
         let response = await axios.get(
@@ -17,17 +20,18 @@ console.log('-*-*-*-**-*-',userlike)
           {
             withCredentials: true,
           }
-        );
-        setUserlike(response.data);
+        )
+        setUserlike(response.data)
       }
-      getUserlike();
-    }, []);
+      getUserlike()
+    }, [auth.users.users_id]);
 
     
        // 取消收藏
        async function deleteLike(pid) {
-        await axios.delete(`http://localhost:3001/users/user_like_delete/${pid}`, {
+        await axios.delete(`http://localhost:3001/user_like_delete/${pid}`, {
         withCredentials: true, })
+        setLike(false)
     }
 
      
@@ -45,6 +49,7 @@ console.log('-*-*-*-**-*-',userlike)
                             deleteLike(v.product_id)
                             console.log('--------------46',auth.users.users_id)
                             console.log('16797878878',v.product_id)
+                            // window.location.reload()
                             }} />
                 <img
                     src={v.img_file}

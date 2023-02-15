@@ -37,12 +37,15 @@ function HeadImg(user) {
     // console.log('會員資料')
     async function getUsers() {
       let response = await axios.get(
-        `http://localhost:3001/users/${auth.users.users_id}`
+        `http://localhost:3001/users/${auth.users_id}`,
+        {
+          withCredentials: true,
+        }
       )
       setUsers(response.data)
     }
     getUsers()
-  }, [auth.users.users_id])
+  }, [auth.users_id])
 
 
   // 只執行一次

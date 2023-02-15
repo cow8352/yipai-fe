@@ -49,7 +49,7 @@ function Artist() {
   //   setSelectedName(event.target.value);
   // };
   useEffect(() => {
-    console.log('空陣列的 useEffect');
+    // console.log('空陣列的 useEffect');
   }, []);
 
   useEffect(() => {
@@ -73,22 +73,22 @@ function Artist() {
   const handleSortNameUp = () => {
     const sortedB = [...artist].sort((a, b) => a.users_name.localeCompare(b.users_name));
     setArtist(sortedB);
-    console.log(sortedB);
+    // console.log(sortedB);
   };
   const handleSortNameDown = () => {
     const sortedC = [...artist].sort((a, b) => b.users_name.localeCompare(a.users_name));
     setArtist(sortedC);
-    console.log(sortedC);
+    // console.log(sortedC);
   };
   const handleSortAgeUp = () => {
     const sortedD = [...artist].sort((a, b) => b.users_birth.localeCompare(a.users_birth));
     setArtist(sortedD);
-    console.log(sortedD);
+    // console.log(sortedD);
   };
   const handleSortAgeDown = () => {
     const sortedE = [...artist].sort((a, b) => a.users_birth.localeCompare(b.users_birth));
     setArtist(sortedE);
-    console.log(sortedE);
+    // console.log(sortedE);
   };
 
   return (

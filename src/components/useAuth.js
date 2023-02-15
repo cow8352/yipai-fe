@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useContext, createContext, useEffect } from "react";
+import React, { useState, useContext, createContext, useEffect, useLayoutEffect } from "react";
 
 const AuthContext = createContext(null);
 
@@ -8,28 +8,34 @@ export const AuthProvider = ({ children }) => {
     isAuth: false,
     member: {
       users_id: 0,
-
-      user_imageHead: "",
-      user_imagePage: "",
-      users_name: "",
-      users_account: "",
-      users_main_product: "",
-      users_aside_pictur: "",
-      users_password: "",
-      users_phone: "",
-      users_email: "",
-      users_create_time: "",
-      users_valid: "",
-      users_slogan: "",
-      users_introduce: "",
-      users_valid_role: "",
-      users_birth: "",
-      users_city: "",
-      users_township: "",
-      users_street: "",
-      
+      user_imageHead:'',
     },
   });
+
+  useLayoutEffect(() => {
+    async function getAuth() {
+      let response = await axios.get(`http://localhost:3001/users/checkusers`, {
+        // 為了跨源存取 cookie
+        withCredentials: true,
+      })
+      if (response.data.users_id) {
+        const {
+          users_id,
+          user_imageHead
+
+        } = response.data
+        setAuth({
+          users: {
+            user_imageHead: user_imageHead,
+            users_id: users_id,
+
+          },
+          isAuth: true,
+        })
+      }
+    }
+    getAuth()
+  }, [])
 
   return (
     <AuthContext.Provider
