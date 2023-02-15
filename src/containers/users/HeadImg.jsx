@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useContext } from "react";
 import BuyBotton from "./BuyBotton";
 import {
   BuyerSettings,
@@ -18,9 +18,19 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { display } from "@mui/system";
 import { useAuth } from '../../components/useAuth'
+const moment=require('moment')
 
 function HeadImg(user) {
   const { auth } = useAuth()
+  console.log(auth);
+  const [selectedFile, setSelectedFile] = useState(null)
+  // 是否有檔案被挑選
+  const [isFilePicked, setIsFilePicked] = useState(false)
+  // 預覽圖片
+  const [preview, setPreview] = useState('')
+  // server上的圖片網址
+  const [imgServerUrl, setImgServerUrl] = useState('')
+
   const [users, setUsers] = useState([])
 
   let [UserData, setUserData] = useState({}); //記錄數值
@@ -28,10 +38,14 @@ function HeadImg(user) {
   let [UserOrders, setUserOrders] = useState([]); //記錄使用者訂單
   let [coupon, setCoupon] = useState([]); //coupon
 
+  let[city,setCity]=useState('');
+  let[township,setTownship]=useState('');
+  let[rode,setRode]=useState('');
+
   let [UserImg, setUserImg] = useState([]); //記錄舊圖網址
   let { userID } = useParams();
   let { OrderDetails, setOrderDetails } = useState(null);
-
+ 
   useEffect(() => {
     // console.log('會員資料')
     async function getUsers() {
@@ -98,6 +112,9 @@ function HeadImg(user) {
     email: "",
     // imageHead: "",
     phone: "",
+    city:city,
+    township:township,
+    rode:rode,
   });
   //================================================================
   //  記錄輸入的產品
@@ -112,22 +129,52 @@ function HeadImg(user) {
   // 檔案更新值
   function handleUpload(e) {
     // file input 的值並不是存在 value 欄位裡
+    const file = e.target.files[0]
+
+    if (file) {
+      setIsFilePicked(true)
+      setSelectedFile(file)
+      setImgServerUrl('')
+    } else {
+      setIsFilePicked(false)
+      setSelectedFile(null)
+      setImgServerUrl('')
+    }
     setProductInputData({ ...productInputData, photo: e.target.files[0] });
+    // console.log('file',file)
+    // console.log('SelectedFile',productInputData)
   }
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreview('')
+      return
+    }
+
+    const objectUrl = URL.createObjectURL(selectedFile)
+    console.log(objectUrl)
+    setPreview(objectUrl)
+
+    // 當元件unmounted時清除記憶體
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [selectedFile])
 
   // 送出輸入資料
+  useEffect(()=>{})
+  
   async function handleProductSubmit(e) {
     console.log("handleProductSubmit");
     // 關閉表單的預設行為
     e.preventDefault();
+    // let formData = new FormData();
     let formData = new FormData();
     formData.append("photo", productInputData.photo);
+
+    // // 對照server上的檔案名稱 req.files.avatar
+    // formData.append('avatar', selectedFile)
+    // formData.append('user', UserData)
     let response = await axios.post(
-      "http://localhost:3001/uploadsPhoto/product",
+      `http://localhost:3001/uploadsPhoto/product/${auth.users.users_id}`,
       formData,
-      {
-        withCredentials: true,
-      }
     );
     console.log(response.data);
     alert("圖片上傳成功");
@@ -146,6 +193,7 @@ function HeadImg(user) {
   UserFormData.append("account", UserInputData.account);
   UserFormData.append("email", UserInputData.email);
   UserFormData.append("phone", UserInputData.phone);
+
   // UserFormData.append("photo", productInputData.photo);
   UserFormData.append("usersId", UserData);
 
@@ -156,10 +204,11 @@ function HeadImg(user) {
         `http://localhost:3001/api/members/userData`,
         {
           username: UserInputData.username,
-          account: UserInputData.account,
+          
           email: UserInputData.email,
           phone: UserInputData.phone,
           usersId: UserData,
+         
         },
         {
           withCredentials: true,
@@ -174,6 +223,27 @@ function HeadImg(user) {
   //     setOrderDetails(User_Order);
   //     console.log(User_Order);
   // }
+  const handleCitySubmit = (event) => {
+    event.preventDefault();
+    axios
+      .put(
+        `http://localhost:3001/api/members/userAdd`,
+        {
+          city: city,
+          rode: rode,
+          township: township,
+          usersId: UserData,
+         
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => console.log(response))
+      .catch((error) => console.error(error));
+    console.log("輸入中");
+    alert("更新資料成功");
+  };
 
   const couponsStatusMap = {
     1: "已領取",
@@ -185,23 +255,25 @@ function HeadImg(user) {
     console.log(UserInputData);
   }, [UserInputData]);
 
+
+
+
   return (
     <div className="_buyLogin_flex">
       <div className="_buyLogin_RWDflexcol _buyLogin_rwd_flex">
         <div className="_buyLogin_flex-re" style={{ marginTop: "1em" }}>
-          <img
-            src={
-              UserOldDatas &&
-              UserOldDatas.user_imageHead &&
-              UserOldDatas.user_imageHead.includes("http")
-                ? UserOldDatas.user_imageHead
-                : "http://localhost:3001/public/uploads/" +
-                  UserOldDatas.user_imageHead
-            }
+          {isFilePicked && <img
+            src={ preview}
             alt="buyHead"
             className="_buyLogin_headImg"
-          />
-          <div className="d-flex">
+            style={{
+                    width: "140px",
+                    height: "140px",
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                  }}
+          />}
+          <div className="d-flex _buyLogin_headIcon_button">
           <label className='_buyLogin_headIcon'>
                         {/* 增加檔案 */}
                         <div>
@@ -296,10 +368,11 @@ function HeadImg(user) {
                     placeholder={UserOldDatas.users_account}
                     value={UserInputData.account}
                     onChange={handleChange}
+                    disabled={true}
                     required
                   ></input>
                 </div>
-                <div className=" _buyLogin_flex_content _buyLogin_p2">
+                {/* <div className=" _buyLogin_flex_content _buyLogin_p2">
                   <label className="_buyLogin_h4">Email：</label>
                   <input
                     className="_buyLogin_SettingInput"
@@ -309,7 +382,7 @@ function HeadImg(user) {
                     onChange={handleChange}
                     required
                   ></input>
-                </div>
+                </div> */}
                 <div className=" _buyLogin_flex_content _buyLogin_p2">
                   <label className="_buyLogin_h4">Tel：</label>
                   <input
@@ -342,14 +415,14 @@ function HeadImg(user) {
             </div>
             <div className="_buyLogin_Contentbox">
               {/* 右邊表單 */}
-              <form method="post">
+              <form method="post"  onSubmit={handleCitySubmit}>
                 <div className=" _buyLogin_flex_content _buyLogin_p1">
                   <label className="_buyLogin_h4">城市：</label>
-                  <select className="_buyLogin_SettingInput">
+                  <select name="city" className="_buyLogin_SettingInput" value={city} onChange={(e)=>{setCity(e.target.value)}}>
                     <option disabled>請選擇城市</option>
-                    <option>桃園市</option>
-                    <option>新北市</option>
-                    <option>台北市</option>
+                    <option >桃園市</option>
+                    <option >新北市</option>
+                    <option >台北市</option>
                     <option>基隆市</option>
                     <option>宜蘭縣</option>
                     <option>花蓮縣</option>
@@ -377,38 +450,44 @@ function HeadImg(user) {
                     className="_buyLogin_SettingInput"
                     type="text"
                     name="township"
+                    value={township}
+                    onChange={(e)=>{setTownship(e.target.value)}}
                   ></input>
                 </div>
-                <div className=" _buyLogin_flex_content _buyLogin_p1">
+                {/* <div className=" _buyLogin_flex_content _buyLogin_p1">
                   <label className="_buyLogin_h4">鄰里：</label>
                   <input
                     className="_buyLogin_SettingInput"
                     type="text"
                     name="adjacent"
                   ></input>
-                </div>
+                </div> */}
                 <div className=" _buyLogin_flex_content _buyLogin_p1">
                   <label className="_buyLogin_h4">道路或街名：</label>
                   <input
                     className="_buyLogin_SettingInput"
                     type="text"
                     name="rode"
+                    value={rode}
+                  
+                    onChange={(e)=>{setRode(e.target.value)}}
+
                   ></input>
                 </div>
 
-                <div className=" _buyLogin_flex_content _buyLogin_p1">
+                {/* <div className=" _buyLogin_flex_content _buyLogin_p1">
                   <label className="_buyLogin_h4">郵遞區號：</label>
                   <input
                     className="_buyLogin_SettingInput"
                     type="number"
                     name="postalCode"
                   ></input>
-                </div>
+                </div> */}
                 <div
                   className="_buyLogin_flex _buyLogin_p1 _buyLogin_flex_end"
                   style={{ alignItems: "flex-end" }}
                 >
-                  <button className="_buyLogin_ChangeControlBtn">更改</button>
+                  <button className="_buyLogin_ChangeControlBtn" onClick={handleCitySubmit}>更改</button>
                 </div>
               </form>
             </div>
@@ -427,17 +506,18 @@ function HeadImg(user) {
               </tr>
             </thead>
             <tbody>
+                  {console.log("----------User_Order.order_date----------",UserOrders)}
               {UserOrders.map((User_Order) => (
                 <tr
                   key={User_Order.order_id}
                   className="_buyLogin_tr _buyLogin_tline"
                   style={{ borderColor: "#CAB296" }}
                 >
-                  <td>{User_Order.order_date}</td>
+                  <td>{User_Order.order_id}</td>
                   <td>{User_Order.total}</td>
-                  <td>{User_Order.order_date.slice(0, 10)}</td>
+                  <td>{moment(User_Order.order_date).format()}</td>
                   <td>{User_Order.amount}</td>
-                  <td>
+                  {/* <td>
                     <button
                       className="_buyLogin_tableBtn"
                       onClick={function Detial() {
@@ -447,54 +527,11 @@ function HeadImg(user) {
                     >
                       詳細資訊
                     </button>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>
           </table>
-          <div>
-          <h2>132</h2>
-            {OrderDetails && (
-              <div>
-                <table className="_buyLogin_table">
-                  <thead className="_buyLogin_tline">
-                    <tr className="_buyLogin_td">
-                      <th>訂單ID</th>
-                      <th>訂單狀態</th>
-                      <th>金額</th>
-                      <th>日期</th>
-                      <th>數量</th>
-                      <th>地址</th>
-                      <th>產品編號</th>
-                      <th>總金額</th>
-                      <th>買家編號</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{OrderDetails.order_id}</td>
-                      <td>
-                        {" "}
-                        {OrderDetails.order_status === 1
-                          ? "待出貨"
-                          : OrderDetails.order_status === 2
-                          ? "出貨中"
-                          : "已送達"}
-                      </td>
-                      <td>{OrderDetails.order_price}</td>
-                      <td>{OrderDetails.order_date.slice(0, 10)}</td>
-                      <td>{OrderDetails.amount}</td>
-                      <td>{OrderDetails.send_address}</td>
-                      <td>{OrderDetails.product_id}</td>
-                      <td>{OrderDetails.total}</td>
-                      <td>{OrderDetails.user_id}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-          <div></div>
         </div>
       </div>
 

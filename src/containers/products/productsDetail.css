@@ -43,6 +43,97 @@
   position: relative;
  
 }
+
+.ProductsDetail-color-item-Red{
+  background-color: rgb(214, 76, 76);
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 50%;
+ 
+}
+.ProductsDetail-color-item-Orange{
+  background-color: rgb(238, 149, 15);
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 50%;
+
+}
+.ProductsDetail-color-item-Yellow{
+  background-color: rgb(240, 200, 39);
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 50%;
+
+}
+.ProductsDetail-color-item-Green{
+  background-color: rgb(153, 223, 118);
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 50%;
+
+}
+.ProductsDetail-color-item-blue{
+  background-color: rgb(76, 186, 214);
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 50%;
+ 
+}
+.ProductsDetail-color-item-Purple{
+  background-color: rgb(190, 130, 230);
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 50%;
+
+}
+.ProductsDetail-color-item-brown{
+  background-color: rgb(176, 78, 33);
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 50%;
+
+}
+.ProductsDetail-color-item-White{
+  background-color: rgb(255, 255, 255);
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 50%;
+}
+
+.ProductsDetail-color-item-Gray{
+  background-color: rgb(155, 155, 155);
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 50%;
+}
+.ProductsDetail-color-item-Black{
+  background-color: rgb(29, 28, 28);
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 50%;
+}
+
+
 .ProductsDetail_card-text{
   color:#CAB296;  
   margin: 0;
@@ -56,6 +147,23 @@
   position: relative;
  
 }
+
+.ProductsDetail-color-item{
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 50%;
+}
+
+.ProductsDetail_icon-value1{
+  background-color: rgb(214, 76, 76);
+}
+
+.ProductsDetail_icon-value2{
+  background-color: rgb(238, 149, 15);
+}
+
 .ProductsDetail_Detail {
   width: 100vw;
 }
@@ -115,6 +223,11 @@ p.ProductsDetail_price{
   margin-right: 100px;
 }
 
+
+.ProductsDetail_addCar-bottom{
+  display: none;
+}
+
 .ProductsDetail_carousel-products{
   width: 468px;
   height:570px;
@@ -144,24 +257,18 @@ p.ProductsDetail_price{
   position:absolute;
   margin-top: 60px;
 }
-
-.ProductsDetail_card-img-top{
-  width: 200px;
-  object-fit:contain;
-  position: relative;
-  
-}
 .ProductsDetail_pic-img{
-  height: 330px;
-  padding: 20px;
-  object-fit:contain;
+  width: 250px;
+  height: 250px;
+  object-fit:cover;
+  position: relative;
+  padding: 10px;
 } 
 
 .ProductsDetail__card-text{
   max-width:100%;
   height: 56px;
   padding:0 10px  10px  10px;
-  
 }
 
 p.ProductsDetail_article{
@@ -234,7 +341,7 @@ p.ProductsDetail_article{
 }
 .ProductsDetail_Pic{
   position: absolute;
-  height: 30vh;
+  height: 25vh;
   z-index: 1000;
   margin: 40px 0  0 240px ;
   box-shadow: 3px 3px 10px rgba(123, 123, 129, 0.7);
@@ -308,6 +415,9 @@ p.ProductsDetail_article{
     grid-template-columns: 350px 1fr;
   }
  
+  .ProductsDetail_addCar-bottom{
+    display: none;
+  }
   h6 .ProductsDetail_h6{
   
     width:150px;
@@ -356,7 +466,7 @@ p.ProductsDetail_article{
                          "ProductsDetail_aside"
                          /* "ProductsDetail_main" */
                         ; /* 2.區域分為4行兩列 */
-    grid-template-rows: 680px 500px 311px 400px ; /* 3.各區域 寬高設置 */
+    grid-template-rows: 680px 500px 500px 500px ; /* 3.各區域 寬高設置 */
     grid-template-columns: 550px ;
   }
  
@@ -381,6 +491,7 @@ p.ProductsDetail_article{
  
 }
 
+  
   .ProductsDetail_addCar-bottom{
     padding: 20px;
     background-color:#C9D7E3 ;
@@ -439,7 +550,6 @@ p.ProductsDetail_article{
     height: 30vh;
   }
   
-     
   .ProductsDetail_nav-wrapper{
     width: 100vw;
     position: absolute;

@@ -31,6 +31,13 @@ import sellerorderIcon from "../image/sellerorderIcon.svg";
 
 function SellerHome() {
   const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = useState(null)
+  // 是否有檔案被挑選
+  const [isFilePicked, setIsFilePicked] = useState(false)
+  // 預覽圖片
+  const [preview, setPreview] = useState('')
+  // server上的圖片網址
+  const [imgServerUrl, setImgServerUrl] = useState('')
 
   let [UserData, setUserData] = useState({}); //記錄數值
   let [UserName, setUserName] = useState(''); //記錄數值
@@ -60,8 +67,6 @@ function SellerHome() {
         }
       );
       setSellerProducts(response3);
-      console.log(sellerProducts);
-
       let response2 = await axios.get(
         `http://localhost:3001/api/members/userData`,
         {
@@ -83,8 +88,6 @@ function SellerHome() {
     }
     getMember2();
   }, []);
-console.log("UserName",UserName)
-
   //  記錄輸入的數值
   const [UserInputData, setUserInputData] = useState({
     username: "",
@@ -130,10 +133,8 @@ console.log("UserName",UserName)
       .then((response) => console.log(response))
       .catch((error) => console.error(error));
   };
-  console.log(UserOldDatas);
-  console.log(UserOrders);
   //================================================================
-  //  上傳大頭貼
+  // NOTE 上傳大頭貼
   const [sellerPic, setSellerPic] = useState({
     photo: "",
   });
@@ -141,16 +142,35 @@ console.log("UserName",UserName)
   useEffect(() => {
     console.log(sellerPic);
   }, [sellerPic]);
-
+  
   // 檔案更新值
   function handleSellerPicUpload(e) {
     // file input 的值並不是存在 value 欄位裡
-    console.log("aaaaaaaaaaae.target.files[0]",e.target.files[0].name)
+    const file = e.target.files[0]
+    if (file) {
+      setIsFilePicked(true)
+      setSelectedFile(file)
+      setImgServerUrl('')
+    } else {
+      setIsFilePicked(false)
+      setSelectedFile(null)
+      setImgServerUrl('')
+    }
     setSellerPic({ ...sellerPic, photo: e.target.files[0] });
-    console.log("---------sellerPic",sellerPic)
   }
-  console.log("sellerPic Out--------",sellerPic.photo)
-
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreview('')
+      return
+    }
+    const objectUrl = URL.createObjectURL(selectedFile)
+    console.log(objectUrl)
+    setPreview(objectUrl)
+    // 當元件unmounted時清除記憶體
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [selectedFile])
+  // 送出輸入資料
+  useEffect(()=>{})
   // 送出輸入資料
   async function handleSellerPicSubmit(e) {
     console.log("handleProductSubmit");
@@ -161,19 +181,16 @@ console.log("UserName",UserName)
     if (sellerPic.photo) {
       formData.append("photo", sellerPic.photo);
     }
-    
-
-    // formData.append("photo", sellerPic.photo);
-    console.log("=======================",formData);
-    console.log("sellerPic.photo================",formData)
     let response = await axios.post(
-      "http://localhost:3001/uploadsPhoto/product",
+      `http://localhost:3001/uploadsPhoto/product/${UserData}`,
       formData,
       {
         withCredentials: true,
       }
     );
+    console.log(response.data);
     alert("圖片上傳成功");
+    navigate(0)
   }
   
   //========================================================
@@ -201,15 +218,15 @@ console.log("UserName",UserName)
       ...productInputData,
       [event.target.name]: event.target.value,
     });
+    event.target.classList.toggle("active");
   };
   function handleUpload(e) {
     // file input 的值並不是存在 value 欄位裡
     setImage(e.target.files[0]);
     setProductInputData({ ...productInputData, photo: e.target.files[0] });
   }
-  console.log("------- 193 --------", image);
-
   // 送出輸入資料
+  // NOTE 商品上傳
   async function handleProductSubmit(e) {
     console.log("handleProductSubmit");
     // 關閉表單的預設行為
@@ -235,22 +252,12 @@ console.log("UserName",UserName)
     alert("圖片上傳成功");
     window.location.reload();
   }
-
-  console.log(UserData);
-  console.log(sellerProducts.data);
-  console.log(sellerOrders.data);
-  console.log(sellerOrder);
   // ================sellerProduct商品管理========================
-  // let [sellerProducts, setSellerProducts] = useState([]) //記錄使用者圖畫
   //此賣家的全部圖片
-  console.log(sellerProducts.data);
   const [selectedSellerOrder, setSelectedSellerOrder] = useState({
     name: "",
     price: "",
   });
-
-  console.log(selectedSellerOrder);
-
   async function submitSelectedSellerOrder(selectedSellerOrder) {
     const response = await fetch(
       `http://localhost:3001/product/${selectedSellerOrder.id}`,
@@ -262,20 +269,13 @@ console.log("UserName",UserName)
         body: JSON.stringify(selectedSellerOrder),
       }
     );
-    // setSelectedSellerOrder()
-
     if (!response.ok) {
       throw new Error("Failed to update seller order");
     }
     window.location.reload();
-    // window.location.replace("http://localhost:3000/users/ArtistLoginTo");
-    // navigate('/users/ArtistLoginTo')
   }
-
   // ================sellerOrder訂單資訊========================
-
   const [selectedOrder, setSelectedOrder] = useState(null);
-
   let filteredOrders = [];
   if (
     sellerOrders &&
@@ -291,57 +291,13 @@ console.log("UserName",UserName)
         (product) => product.id === order.product_id
       );
     });
-    console.log(filteredOrders);
-    // setSellerOrders(filteredOrders);
-    // console.log(sellerOrders);
   }
-  console.log(filteredOrders);
-
   // ================sellerOrder END========================
-
   return (
     <>
       <div className="d-flex">
         <div className="sellerhome__main" id="sellerhome__main">
-          <div id="SellerFrontPage" style={{ display: "block" }}>
-            <div className="SellerFrontPage__main__section__news">
-              <h2>最新消息</h2>
-              <p>這是第一則重要消息！！看的到代表一切正常不用擔心！</p>
-            </div>
-            <div className="SellerFrontPage__main__section__todolist">
-              <h2>待辦事項</h2>
-              <div>
-                <ul className="SellerFrontPage__status list-unstyled">
-                  <li>
-                    {/* <Link to={`/about`} ></Link> */}
-                    <h1>0</h1>
-                    {/* <br /> */}
-                    <h3>未出貨</h3>
-                  </li>
-                  <li>
-                    {/* <Link><h1>0</h1></Link> */}
-                    <h3>待處理</h3>
-                  </li>
-                  <li>
-                    {/* <Link><h1>0</h1></Link> */}
-                    <h3>已處理</h3>
-                  </li>
-                  <li>
-                    {/* <Link><h1>0</h1></Link> */}
-                    <h3>待取消</h3>
-                  </li>
-                  <li>
-                    {/* <Link><h1>0</h1></Link> */}
-                    <h3>待退貨</h3>
-                  </li>
-                  <li>
-                    {/* <Link><h1>0</h1></Link> */}
-                    <h3>已售完</h3>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          {/* 元首ˋ頁 */}
           <div id="SellerPage" style={{ display: "none" }}>
             <div className="sellerpage">
               <div className="sellerpage__title mb-0">藝術家資訊</div>
@@ -723,9 +679,6 @@ console.log("UserName",UserName)
                   </div>
                 </div>
               </div>
-              {/* <Button variant="dark" className="me-2">
-                取消
-              </Button> */}
               <Button
                 variant="dark"
                 disabled={
@@ -746,7 +699,7 @@ console.log("UserName",UserName)
               </Button>
             </div>
           </div>
-          <div id="SellerProduct" style={{ display: "none" }}>
+          <div id="SellerProduct" style={{ display: "block" }}>
             <section id="SellerProduct__section ">
               <nav id="SellerProduct__nav d-flex">
                 <h1 className="SellerProduct__total">
@@ -756,14 +709,6 @@ console.log("UserName",UserName)
                     : 0}
                   件畫作
                 </h1>
-                {/* <Button className="SellerProduct__aside_add mt-5" variant="dark">
-                  新增商品+
-                </Button> */}
-                {/* <div className="SellerProduct__aside-list">
-                  <Button className="SellerProduct__aside-sort" variant="dark">
-                    排序
-                  </Button>
-                </div> */}
               </nav>
               <main id="SellerProduct__main">
                 <div class="SellerProduct__main_container">
@@ -848,78 +793,6 @@ console.log("UserName",UserName)
                           </Button>
                         </div>
                       ))}
-                    {/* {sellerProducts &&
-                      sellerProducts.data &&
-                      sellerProducts.data.length > 0 &&
-                      sellerProducts.data.map((seller_order, index) => (
-                        <a href={`/products/${seller_order.id}`}
-                          className="SellerProduct__item col"
-                          key={seller_order.id}
-                        >
-                          <img
-                            className="SellerProduct__card-img-top"
-                            src={seller_order.img_file}
-                            alt={seller_order.name}
-                          /> 
-                          <div className="SellerProduct__card-text">
-                            {selectedSellerOrder.id === seller_order.id && (
-                              <>
-                                <input
-                                  className="SellerProduct__productId"
-                                  type="text"
-                                  style={{ border: 'none', width: '200px' }}
-                                  value={selectedSellerOrder.name}
-                                  onChange={(e) =>
-                                    setSelectedSellerOrder({
-                                      ...selectedSellerOrder,
-                                      name: e.target.value,
-                                    })
-                                  }
-                                />
-                                <input
-                                  className="SellerProduct__price"
-                                  type="number"
-                                  style={{ border: 'none', width: '200px' }}
-                                  value={selectedSellerOrder.price}
-                                  onChange={(e) =>
-                                    setSelectedSellerOrder({
-                                      ...selectedSellerOrder,
-                                      price: e.target.value,
-                                    })
-                                  }
-                                />
-                              </>
-                            )}
-                            
-                            {selectedSellerOrder.id !== seller_order.id && (
-                              <>
-                                <h5 className="SellerProduct__productId">
-                                  作品名稱:{seller_order.name}
-                                </h5>
-                                <div className='m-1'>
-                                  <p className="SellerProduct__price">
-                                    金額:{seller_order.price}
-                                  </p>
-                                </div>
-                              </>
-                            )}
-                          </div>
-                          <Button
-                            className="m-1"
-                            style={{ background: 'black' }}
-                            onClick={() => setSelectedSellerOrder(seller_order)}
-                          >
-                            編輯
-                          </Button>
-                          <Button
-                            onClick={() =>
-                              submitSelectedSellerOrder(selectedSellerOrder)
-                            }
-                          >
-                            確定
-                          </Button>
-                       </a>
-                      ))} */}
                   </div>
                 </div>
               </main>
@@ -936,11 +809,6 @@ console.log("UserName",UserName)
                   筆訂單
                 </h1>
               </div>
-
-              {/* <div className="sellerorder__main__text__input">
-                <input type="text" placeholder="輸入文字搜尋" />
-                <Button variant="dark">排序</Button>
-              </div> */}
             </div>
             <div className="sellerorder__main__table">
               <table className="sellerorder__main__table_table">
@@ -1072,11 +940,6 @@ console.log("UserName",UserName)
           </div>
         </div>
         <div className="_sellerhome__pic_414 m-3">
-          {/* <img
-            src={buyerImg}
-            alt="sellerHead"
-            className="_sellerhome_headImg"
-          /> */}
           <label className="sellerhome__headIcon_414">
             {/* 增加檔案 */}
             <input type="file" style={{ display: "none" }}></input>
@@ -1085,6 +948,17 @@ console.log("UserName",UserName)
         <div className="sellerhome__sidebar">
           <div className="sellerhome__sidebar__center">
             <div className="_sellerhome__pic_1920 m-3">
+            {isFilePicked && <img
+            src={ preview}
+            alt="buyHead"
+            className="_buyLogin_headImg"
+            style={{
+                    width: "140px",
+                    height: "140px",
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                  }}
+          />}
               {UserOldDatas && UserOldDatas.user_imageHead ? (
                 <img
                   src={
@@ -1094,7 +968,7 @@ console.log("UserName",UserName)
                         UserOldDatas.user_imageHead
                   }
                   alt="buyHead"
-                  className="_buyLogin_headImg"
+                  className={"_buyLogin_headImg "+(isFilePicked?"d-none":"")}
                   style={{
                     width: "140px",
                     height: "140px",
@@ -1125,10 +999,10 @@ console.log("UserName",UserName)
               </Button>
             </div>
             <ul className="list-unstyled sellerhome__icon ">
-              <li className="d-flex">
+              {/* <li className="d-flex">
                 <SellerButton src={sellerHouseIcon} onClick={SellerFrontPage} />
                 <p className="sellerhome__icon_text">首頁</p>
-              </li>
+              </li> */}
               <li className="d-flex">
                 <SellerButton src={sellerpageIcon} onClick={SellerPage} />
                 <p className="sellerhome__icon_text">個人頁面</p>

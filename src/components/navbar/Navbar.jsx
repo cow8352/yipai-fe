@@ -114,7 +114,7 @@ const Navbar = () => {
           ) : (
             <>
             
-                <h6>Hi ! {MerberId==0?<a href="/users/LoginTo"> {UserName.users_name}</a>:<a href="/users/ArtistLoginTo"> {UserName.users_name}</a>}</h6>
+                <h6>Hi ! {MerberId === 0?<a href="/users/LoginTo"> {UserName.users_name}</a>:<a href="/users/ArtistLoginTo"> {UserName.users_name}</a>}</h6>
                 
   
 

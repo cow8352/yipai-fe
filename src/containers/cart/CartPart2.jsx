@@ -65,30 +65,27 @@ const CartPart2 = () => {
   const [memberItems, setMemberItems] = useState("");
   const [memberItemsPrice, setMemberItemsPrice] = useState("");
   const [handleSubmit, setHandleSubmit] = useState([]);
-  
-  
 
   useEffect(() => {
     function orderIdFor(item) {
-      let j = '';
+      let j = "";
       for (let i = 0; i < item.length; i++) {
-        j = item[i].id + ',' + j;
+        j = item[i].id + "," + j;
       }
-      return j
+      return j;
     }
-  
+
     function orderPriceFor(item) {
-      let j = '';
+      let j = "";
       for (let i = 0; i < item.length; i++) {
-        j = item[i].price + ',' + j;
+        j = item[i].price + "," + j;
       }
-      return j
+      return j;
     }
 
     setMemberItems(orderIdFor(items));
-    setMemberItemsPrice(orderPriceFor(items))
-    
-    
+    setMemberItemsPrice(orderPriceFor(items));
+
     // 在 component 初始化的時候跑一次
     // 通常會把去跟後端要資料的動作放在這裡
     async function getProduct() {
@@ -124,37 +121,39 @@ const CartPart2 = () => {
       // console.log(response.data[0]);
       setAddress(
         response.data[0].users_city +
-          response.data[0].users_street +
-          response.data[0].users_township
+          response.data[0].users_township +
+          response.data[0].users_street
       );
     }
     getMember2();
   }, []);
-//回傳到user_order資料庫的function
-  async function postOrder(){
-  //請求後端
-    let response = await axios.post(`http://localhost:3001/api/members/orders`,{
-      product_id:memberItems,
-      users_id:UserName.users_id,
-      amount:cart.totalItems,
-      payment:"LinePay",
-      send_address:address,
-      total:cart.cartTotal,
-      price:memberItemsPrice
-        
-    },{
-      withCredentials:true
-    });
-  
+  //回傳到user_order資料庫的function
+  async function postOrder() {
+    //請求後端
+    let response = await axios.post(
+      `http://localhost:3001/api/members/orders`,
+      {
+        product_id: memberItems,
+        users_id: UserName.users_id,
+        amount: cart.totalItems,
+        payment: "LinePay",
+        send_address: address,
+        total: cart.cartTotal,
+        price: memberItemsPrice,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
     console.log(response.data);
-    
+
     // 在請求完成後呼叫清空購物車的函式
     FirstCart.clearCart();
     setTimeout(() => {
-      navigate('/cart/CartPart3');
+      navigate("/cart/CartPart3");
     }, 100);
   }
-  
 
   return (
     <div id="login">
