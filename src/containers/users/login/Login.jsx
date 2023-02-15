@@ -1,17 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 // https://www.npmjs.com/package/axios
 import axios from "axios";
 import { HeadImg } from "../HeadImg";
+import { useAuth } from "../../../components/useAuth";
+
 
 import "./buyLogin.css";
 
 const Login = () => {
+    const { setAuth } = useAuth()
+    const navigate = useNavigate()
+
     // 登入預設
     const [member, setMember] = useState({
-        account: "cola00981",
-        password: "00000000",
+        account: "",
+        password: "",
     });
 
     function handleChange(e) {
@@ -19,7 +24,8 @@ const Login = () => {
     }
     async function handleSubmit(e) {
         e.preventDefault();
-        let response = await axios.post(
+        try{
+             let response = await axios.post(
             "http://localhost:3001/api/auth/Buylogin",
             member,
             {
@@ -27,12 +33,22 @@ const Login = () => {
                 withCredentials: true,
             }
         );
-        console.log(response.data);      
+        console.log('users:',response.data.member);      
         alert("登入成功");
+        setAuth({ isAuth: true, users: response.data.member })
+
         // 跳轉
-        setTimeout(() => {
-            window.location.assign("/users/LoginTo");
-        }, 500);
+        navigate('/users/LoginTo')
+        // setTimeout(() => {
+        //     window.location.assign("/users/LoginTo");
+        // }, 500);
+        }catch(err){
+            alert("登入失敗");
+            setTimeout(() => {
+                window.location.assign("/users/BuyLogin");
+            }, 500);
+        }
+       
     }
 
     return (

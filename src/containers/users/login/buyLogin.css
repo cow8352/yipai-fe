@@ -130,20 +130,33 @@
     margin-bottom: 0.5em;
     font-size: var(--text-h2);
 }
-._buyLogin_headIcon {
+.sellerhome_buyLogin_headIcon,._buyLogin_headIcon {
     background-image: url(../image/addFileIcon.svg);
+    background-position: center;
+    background-size: 70%;
+    background-color:#C9D7E3;
     background-repeat: no-repeat;
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    border-radius: 40px;
     z-index: 3;
-    position: absolute;
     /* top: 12.5em; */
-    right: 0.5em;
     cursor: pointer;
+    margin: 0;
 }
 ._buyLogin_headImg {
     z-index: 0;
 }
+._buyLogin_headIcon_Button{
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    color: #eaeaea;
+    background-color: #000;
+    margin: 0px 0;
+}
+
 /* ICON按鈕樣式 */
 ._buyLogin_buyerControlBtn {
     border: 0;

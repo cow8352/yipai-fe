@@ -3,15 +3,17 @@ import buyButton from "./image/buyButton.svg";
 import "./login/buyLogin.css";
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import { useAuth } from "../../components/useAuth";
+
 
 function ArtList(params) {
-    const [userlike, setUserlike] = useState([]);
-    
-
+    const { auth } = useAuth()
+    const [userlike, setUserlike] = useState([]);  
+console.log('-*-*-*-**-*-',userlike)
     useEffect(() => {
       async function getUserlike() {
         let response = await axios.get(
-          `http://localhost:3001/userlike/`,
+          `http://localhost:3001/userlike/${auth.users.users_id}`,
           {
             withCredentials: true,
           }
@@ -41,7 +43,7 @@ function ArtList(params) {
                 {/* 刪除按鈕 */}
                 <button className={params.btnClass}  onClick={() => {
                             deleteLike(v.product_id)
-                            console.log('--------------46',)
+                            console.log('--------------46',auth.users.users_id)
                             console.log('16797878878',v.product_id)
                             }} />
                 <img
