@@ -4,10 +4,14 @@ import { useState } from "react";
 // https://www.npmjs.com/package/axios
 import axios from "axios";
 import { HeadImg } from "../HeadImg";
+import { useAuth } from "../../../components/useAuth";
+
 
 import "./buyLogin.css";
 
 const Login = () => {
+    const { setAuth } = useAuth()
+
     // 登入預設
     const [member, setMember] = useState({
         account: "",
@@ -28,12 +32,14 @@ const Login = () => {
                 withCredentials: true,
             }
         );
-        console.log(response.data);      
+        console.log('users:',response.data.member);      
         alert("登入成功");
+        setAuth({ isAuth: true, users: response.data.member })
+
         // 跳轉
-        setTimeout(() => {
-            window.location.assign("/users/LoginTo");
-        }, 500);
+        // setTimeout(() => {
+        //     window.location.assign("/users/LoginTo");
+        // }, 500);
         }catch(err){
             alert("登入失敗");
             setTimeout(() => {

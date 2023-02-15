@@ -17,8 +17,12 @@ import artsImg from "./image/artsImg.png";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { display } from "@mui/system";
+import { useAuth } from '../../components/useAuth'
 
 function HeadImg(user) {
+  const { auth } = useAuth()
+  const [users, setUsers] = useState([])
+
   let [UserData, setUserData] = useState({}); //記錄數值
   let [UserOldDatas, setUserOldDatas] = useState({}); //原本的數據
   let [UserOrders, setUserOrders] = useState([]); //記錄使用者訂單
@@ -27,6 +31,18 @@ function HeadImg(user) {
   let [UserImg, setUserImg] = useState([]); //記錄舊圖網址
   let { userID } = useParams();
   let { OrderDetails, setOrderDetails } = useState(null);
+
+  useEffect(() => {
+    // console.log('會員資料')
+    async function getUsers() {
+      let response = await axios.get(
+        `http://localhost:3001/users/${auth.users.id}`
+      )
+      setUsers(response.data)
+    }
+    getUsers()
+  }, [auth.users.id])
+
 
   // 只執行一次
   useEffect(() => {
@@ -182,20 +198,22 @@ function HeadImg(user) {
             alt="buyHead"
             className="_buyLogin_headImg"
           />
-          <label className="_buyLogin_headIcon">
-            {/* 增加檔案 */}
-            <div>
-              <input
-                type="file"
-                id="imageHead"
-                name="imageHead"
-                style={{ display: "none" }}
-                // value={imgServerUrl}
-                onChange={handleUpload}
-              ></input>
-            </div>
-          </label>
-          <button onClick={handleProductSubmit}>送出</button>
+          <div className="d-flex">
+          <label className='_buyLogin_headIcon'>
+                        {/* 增加檔案 */}
+                        <div>
+                            <input
+                                type='file'
+                                id='imageHead'
+                                name='imageHead'
+                                style={{ display: "none" }}
+                                // value={imgServerUrl}
+                                onChange={handleUpload}
+                            ></input>
+                        </div>
+                    </label>
+          <button className="_buyLogin_headIcon_Button" onClick={handleProductSubmit}>送出</button>
+        </div>
         </div>
         <h3>
           您好
@@ -420,7 +438,7 @@ function HeadImg(user) {
                     <button
                       className="_buyLogin_tableBtn"
                       onClick={function Detial() {
-                        setOrderDetails( User_Order);
+                        OrderDetails = User_Order;
                         console.log(OrderDetails);
                       }}
                     >
@@ -432,6 +450,7 @@ function HeadImg(user) {
             </tbody>
           </table>
           <div>
+          <h2>132</h2>
             {OrderDetails && (
               <div>
                 <table className="_buyLogin_table">
