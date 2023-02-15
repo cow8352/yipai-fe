@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
 import BuyBotton from "./BuyBotton";
-import buyButton from "./image/buyButton.svg";
+import sellerupIcon from "./image/sellerupIcon.svg";
 import {
   BuyerSettings,
   MyOrder,
@@ -16,7 +16,7 @@ import ArtistImg from "./image/ArtistImg.png";
 import pesnalImg from "./image/pesnalImg.png";
 import artsImg from "./image/artsImg.png";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import { display } from "@mui/system";
 import { useAuth } from '../../components/useAuth'
 import "./login/buyLogin.css";
@@ -108,14 +108,14 @@ function HeadImg(user) {
       setUserlike(response.data)
     }
     getUserlike()
-  }, [userlike]);
+  }, [like]);
 
   
     // 取消收藏
     async function deleteLike(pid) {
     await axios.delete(`http://localhost:3001/user_like_delete/${pid}`, {
     withCredentials: true, })
-    setLike(false)
+    setLike(!like)
   }
 
   //  記錄輸入的數值
@@ -783,13 +783,16 @@ function HeadImg(user) {
                     <h5 className="_buyLogin_artSize">商品尺寸：{v.width} * {v.height}</h5>
                     <h5  className="_buyLogin_artPrice">價格：{v.price}</h5>
                 </div>
+                <Link to={`/products/${v.product_id}`}>
                 <BuyBotton
-                    text='購買'
-                    src={buyButton}
+                    text='查看詳細'
+                    src={sellerupIcon}
                     alt='ICon'
-                    btnStyle={{ display: "flex" }}
+                    btnStyle={{ display: "flex"}}
                     className='_buyLogin_buyerControlBtnNormal'
+                    dNone={'d-none'}
                 />
+                </Link>
             </div>
             </div>)
         })}

@@ -19,6 +19,7 @@ import { useAuth } from '../../components/useAuth'
 import { useCart } from "../cart/utils/useCart";
 
 const ProductsDetail = () => {
+  const {productId}= useParams()
   // cartpart
   const {
     cart,
@@ -61,6 +62,8 @@ const ProductsDetail = () => {
     getMember2();
   }, []);
 
+  
+
   const [UserName, setUserName] = useState([]);
   useEffect(() => {
     async function getMember2() {
@@ -77,23 +80,22 @@ const ProductsDetail = () => {
     getMember2();
   }, []);
 
-  // useEffect(() => {
-  //   const user_id = auth.users_id
-  //   async function getMember2() {
-  //     let response = await axios.get(
-  //       `http://localhost:3001/users/user_like_add`,
-  //       {
-  //         withCredentials: true,
-  //         product_id,
-  //         user_id,
-  //       }
-  //     );
+// 收藏資料
+  useEffect(() => {
+    const getMember2= async function() {
+      let response = await axios.get(
+        `http://localhost:3001/users/user_like_add/info/${productId}`, {
+          withCredentials: true,
+        })
+        console.log('response.data[0]', response.data[0] )
+        if(response.data[0].length > 0) setLiked(true)
+    }
+    getMember2();
+  }, []);
 
-  //     setLiked(response.data[0]);
-  //     console.log(response.data[0]);
-  //   }
-  //   getMember2();
-  // }, []);
+// useEffect(()=>{
+//   if(likeList.length>0) setLiked(true)
+// },[likeList])
 
     //加入收藏
     async function addLike(pid) {
@@ -189,7 +191,6 @@ const ProductsDetail = () => {
   const [data, setData] = useState([]);
   const [artistData, setArtistData] = useState([]);
   const [selectedArtist, setSelectedArtist] = useState([]);
-  const { productId } = useParams();
   const { artistId } = useParams();
   const [artistName, setArtistName] = useState([]);
   const [products, setProducts] = useState("");
@@ -358,7 +359,7 @@ const ProductsDetail = () => {
                      <div className="collect">
                       {auth.isAuth ? (
                         <div>
-                          {liked ? (
+                          { liked ? (
                             <FaHeart
                               className="collect_fill_icon"
                               onClick={() => {
