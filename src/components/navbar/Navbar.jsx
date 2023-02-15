@@ -10,8 +10,6 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 import { useCart } from "../../containers/cart/utils/useCart";
 
 import axios from "axios";
-import { useAuth } from '../../components/useAuth'
-
 const Navbar = () => {
   // ...
   const {
@@ -33,8 +31,6 @@ const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [MerberId,setMemberId]=useState('');
 
-  const { auth } = useAuth()
-  
   useEffect(() => {
     async function getMember2() {
       let response = await axios.get(
@@ -49,7 +45,7 @@ const Navbar = () => {
         setLogin(false);
       }
       setUserName(response.data[0]);
-      // console.log(response.data[0]);
+      console.log(response.data[0]);
       setMemberId(response.data[0].users_valid_role)
     }
     getMember2();
@@ -77,7 +73,7 @@ const Navbar = () => {
       setLogin(false);
       // You can redirect the user to the login page after they log out
     } catch (error) {
-      // console.error(error);
+      console.error(error);
     }
    
   }
@@ -109,7 +105,7 @@ const Navbar = () => {
           </p>
         </div>
         <div className="yipai__navbar-icon">
-          {!auth.isAuth ? (
+          {!login ? (
             <p>
               <Link to="users" className="navbar__user-set">
                 <FaUser fontSize={22} />

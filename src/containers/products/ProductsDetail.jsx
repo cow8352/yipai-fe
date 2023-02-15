@@ -323,10 +323,15 @@ const ProductsDetail = () => {
                   <Link to="/products">藝術品</Link>▶{productsDetail.product_style}▶{productsDetail.material}
                 </p>
                 <img
-                    className="ProductsDetail_img-pic"
-                    src={productsDetail.img_file}
-                    alt="img"
-                  />
+                  className="ProductsDetail_img-pic"
+                  src={
+                    productsDetail.img_file.includes("http")
+                      ? productsDetail.img_file
+                      : "http://localhost:3001/public/uploads/" +
+                        productsDetail.img_file
+                  }
+                  alt="img"
+                />
               </figure>
               <article id="ProductsDetail_article">
                 <div className="ProductsDetail_Detail ">
@@ -336,8 +341,16 @@ const ProductsDetail = () => {
                     </p>
                   </div>
                   <div className="col-md-6">
-                  <img className="ProductsDetail_Pic" src={productsDetail.img_file}/>
-                  <img src={demo} alt="" className="ProductsDetail_demobox" />
+                    <img
+                      className="ProductsDetail_Pic"
+                      src={
+                        productsDetail.img_file.includes("http")
+                          ? productsDetail.img_file
+                          : "http://localhost:3001/public/uploads/" +
+                            productsDetail.img_file
+                      }
+                    />
+                    <img src={demo} alt="" className="ProductsDetail_demobox" />
                   </div>
                 </div>
               </article>
@@ -372,38 +385,49 @@ const ProductsDetail = () => {
               </aside>
               )
               })}
-        {/* 電腦版 */}
-        <main id="ProductsDetail_main">
-        <h3 className="fw-bold ProductsDetail_more">
-              其他推薦的藝術品
-        </h3>
-        {SelectedImg_file.slice(0, 5).map((SelectedImg_file, index) => {
-          return (
-          <div className="ProductsDetail_main-wrap" key={SelectedImg_file.id}>
-            <table className="ProductsDetail_other-product">
-            <thead>
-              <tr className="ProductsDetail_card-pic ProductsDetail_pic1">
-                <td>
-                <a href={`http://localhost:3000/products/${SelectedImg_file.id}`}>
-                  <img
-                    className="ProductsDetail_pic-img"
-                    src= {SelectedImg_file.img_file}
-                    />
-                  <div className="ProductsDetail__card-text">
-                    <h6 className="ProductsDetail_productId">{SelectedImg_file.name}</h6>
-                    <p className="ProductsDetail_price">${SelectedImg_file.price}</p>
-                  </div>
-                  </a>
-                </td>
-              </tr>
-            </thead>
-            </table>
-          </div>
-          )
-              })}
-        </main>
-        </section>
-        );
+
+              {/* 電腦版 */}
+
+              <main id="ProductsDetail_main">
+                <h3 className="fw-bold ProductsDetail_more">
+                  其他推薦的藝術品
+                </h3>
+                {SelectedImg_file.slice(0, 5).map((SelectedImg_file, index) => {
+                  return (
+                    <div className="ProductsDetail_main-wrap">
+                      <table className="ProductsDetail_other-product">
+                        <tr className="ProductsDetail_card-pic ProductsDetail_pic1">
+                          <td>
+                            <a
+                              href={`http://localhost:3000/products/${SelectedImg_file.id}`}
+                            >
+                              <img
+                                className="ProductsDetail_pic-img"
+                                src={
+                                  SelectedImg_file.img_file.includes("http")
+                                    ? SelectedImg_file.img_file
+                                    : "http://localhost:3001/public/uploads/" +
+                                      SelectedImg_file.img_file
+                                }
+                              />
+                              <div className="ProductsDetail__card-text">
+                                <h6 className="ProductsDetail_productId">
+                                  {SelectedImg_file.name}
+                                </h6>
+                                <p className="ProductsDetail_price">
+                                  ${SelectedImg_file.price}
+                                </p>
+                              </div>
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  );
+                })}
+              </main>
+            </section>
+          );
         })}
       </div>
     </>

@@ -33,6 +33,8 @@ function SellerHome() {
   const navigate = useNavigate();
 
   let [UserData, setUserData] = useState({}); //記錄數值
+  let [UserName, setUserName] = useState(''); //記錄數值
+
   let [UserOldDatas, setUserOldDatas] = useState({}); //原本的數據
   let [UserOrders, setUserOrders] = useState([]); //記錄使用者訂單
   let [sellerProducts, setSellerProducts] = useState([]); //記錄使用者圖畫
@@ -67,6 +69,7 @@ function SellerHome() {
         }
       );
       setUserData(response2.data[0].users_id);
+      setUserName(response2.data[0].users_name)
       //   setUserData(response2.data[0])
       console.log(response2.data[0]);
       setUserOldDatas(response2.data[0]);
@@ -80,6 +83,7 @@ function SellerHome() {
     }
     getMember2();
   }, []);
+console.log("UserName",UserName)
 
   //  記錄輸入的數值
   const [UserInputData, setUserInputData] = useState({
@@ -114,8 +118,9 @@ function SellerHome() {
   // 送出輸入資料
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log('==================userData',UserData)
     axios
-      .put(`http://localhost:3001/api/members`, {
+      .put(`http://localhost:3001/api/members/userData`, {
         username: UserInputData.username,
         account: UserInputData.account,
         // email: UserInputData.email,
@@ -140,6 +145,7 @@ function SellerHome() {
   // 檔案更新值
   function handleSellerPicUpload(e) {
     // file input 的值並不是存在 value 欄位裡
+    console.log("aaaaaaaaaaae.target.files[0]",e.target.files[0].name)
     setSellerPic({ ...sellerPic, photo: e.target.files[0] });
     console.log("---------sellerPic",sellerPic)
   }
@@ -151,9 +157,15 @@ function SellerHome() {
     // 關閉表單的預設行為
     e.preventDefault();
     let formData = new FormData();
-    formData.append("photo", sellerPic.photo);
+    
+    if (sellerPic.photo) {
+      formData.append("photo", sellerPic.photo);
+    }
+    
+
+    // formData.append("photo", sellerPic.photo);
     console.log("=======================",formData);
-    console.log("sellerPic.photo================",sellerPic.photo)
+    console.log("sellerPic.photo================",formData)
     let response = await axios.post(
       "http://localhost:3001/uploadsPhoto/product",
       formData,
@@ -173,7 +185,7 @@ function SellerHome() {
     height: "",
     material: "",
     style: "",
-    artist: "tonihamel",
+    artist: UserName,
     creation_year: "",
     work_hue: "",
     price: "",
@@ -209,7 +221,7 @@ function SellerHome() {
     formData.append("height", productInputData.height);
     formData.append("material", productInputData.material);
     formData.append("style", productInputData.style);
-    formData.append("artist", productInputData.artist);
+    formData.append("artist", UserName);
     formData.append("creation_year", productInputData.creation_year);
     formData.append("work_hue", productInputData.work_hue);
     formData.append("price", productInputData.price);
@@ -359,6 +371,7 @@ function SellerHome() {
                       style={{ border: "none" }}
                       value={UserInputData.account}
                       onChange={handleChange}
+                      disabled={true}
                       required
                     />
                   </div>
@@ -387,7 +400,7 @@ function SellerHome() {
                       border: "none",
                       padding: "10px",
                     }}
-                    value={UserInputData.username}
+                    value={UserInputData.introduce}
                     onChange={handleChange2}
                     required
                   />
