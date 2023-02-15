@@ -14,12 +14,6 @@ const Brand = () => {
   if(location.pathname === '/cart/CartPart2'){
     return<></>
   }
-  if (location.pathname === '/users/SellLogin') {
-    return <></>
-  }
-  if (location.pathname === '/users/BuyLogin') {
-    return <></>
-  }
   if(location.pathname === '/users/ArtistLoginTo'){ return<></> }
 
   return(

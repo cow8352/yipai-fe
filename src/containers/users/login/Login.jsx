@@ -10,8 +10,8 @@ import "./buyLogin.css";
 const Login = () => {
     // 登入預設
     const [member, setMember] = useState({
-        account: "",
-        password: "",
+        account: "cola00981",
+        password: "00000000",
     });
 
     function handleChange(e) {
@@ -19,8 +19,7 @@ const Login = () => {
     }
     async function handleSubmit(e) {
         e.preventDefault();
-        try{
-             let response = await axios.post(
+        let response = await axios.post(
             "http://localhost:3001/api/auth/Buylogin",
             member,
             {
@@ -34,13 +33,6 @@ const Login = () => {
         setTimeout(() => {
             window.location.assign("/users/LoginTo");
         }, 500);
-        }catch(err){
-            alert("登入失敗");
-            setTimeout(() => {
-                window.location.assign("/users/BuyLogin");
-            }, 500);
-        }
-       
     }
 
     return (

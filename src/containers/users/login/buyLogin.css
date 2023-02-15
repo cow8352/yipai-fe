@@ -59,6 +59,7 @@
 ._buyLogin_flex h5 {
     font-size: 29px;
     line-height: 121.3%;
+    width: 300px;
 }
 ._buyLogin_p2 {
     padding-top: 2em;
@@ -539,4 +540,8 @@
         overflow: hidden;
         margin: 2em 0;
     }
+}
+
+.userlike_img{
+    width: 180px;
 }

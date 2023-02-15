@@ -54,6 +54,22 @@ function MyOrder(params) {
     FavoriteArts.style.display='none';
 }
 
+// 我的訂單選項
+function MyCoupon(params) {
+    const BuyerSettings = document.getElementById("BuyerSettings");
+    BuyerSettings.style.display='none';
+    const PurchaseHistory =document.getElementById("PurchaseHistory")
+    PurchaseHistory.style.display='none';
+    const MyOrder =document.getElementById("MyOrder")
+    MyOrder.style.display='none';
+    const MyCoupon =document.getElementById("MyCoupon")
+    MyCoupon.style.display='block';
+    const FavoriteArtist =document.getElementById("FavoriteArtist")
+    FavoriteArtist.style.display='none';
+    const FavoriteArts =document.getElementById("FavoriteArts")
+    FavoriteArts.style.display='none';
+}
+
 // 我喜愛的藝術家
 function FavoriteArtist(params) {
     const BuyerSettings = document.getElementById("BuyerSettings");
@@ -82,27 +98,11 @@ function FavoriteArts(params) {
     FavoriteArts.style.display='block';
 }
 
-//折價券
-function MyCoupon(params) {
-    const BuyerSettings = document.getElementById("BuyerSettings");
-    BuyerSettings.style.display='none';
-    const PurchaseHistory =document.getElementById("PurchaseHistory")
-    PurchaseHistory.style.display='none';
-    const MyOrder =document.getElementById("MyOrder")
-    MyOrder.style.display='none';
-    const MyCoupon =document.getElementById("MyCoupon")
-    MyCoupon.style.display='block';
-    const FavoriteArtist =document.getElementById("FavoriteArtist")
-    FavoriteArtist.style.display='none';
-    const FavoriteArts =document.getElementById("FavoriteArts")
-    FavoriteArts.style.display='none';
-}
-
 export {
     BuyerSettings,
     MyOrder,
     PurchaseHistory,
     FavoriteArtist,
     FavoriteArts,
-    MyCoupon,
+    MyCoupon
 };

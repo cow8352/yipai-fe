@@ -14,6 +14,8 @@ import { useCart } from "./utils/useCart";
 
 
 import ListItemsWithHook from './pages/ShoppingCart/components/ListItemsWithHook'
+import { MyCoupon } from "../users/userOnclick";
+import { HeadImg } from "../users/HeadImg";
 
 var buyerId = true;
 
@@ -22,6 +24,22 @@ const Cart = () => {
   const [user_order, setUserOrder] = useState([]);
   const [login, setLogin] = useState(false);
   const [selllogin, setSellLogin] = useState(false);
+  const [couponTotal, setCouponTotal] = useState([])
+  console.log('55555555555555',couponTotal)
+    useEffect(() => {
+      // 在 component 初始化的時候跑一次
+      // 通常會把去跟後端要資料的動作放在這裡
+      async function getCouponTotal() {
+        let response = await axios.get("http://localhost:3001/couponTotal",
+        {
+            withCredentials: true,
+        });
+        setCouponTotal(response.data);
+        // console.log(response.data);
+      }
+      getCouponTotal();
+  
+    }, []);
   useEffect(() => {
     async function getMember2() {
       let response = await axios.get(
@@ -127,7 +145,7 @@ const Cart = () => {
                 <a href="#news">結帳資訊 : </a>
               </div>
               <div>
-                <a href="#contact">優惠券 : {0}</a>
+                <a href="#contact">優惠券 : {couponTotal[0].total}</a>
                 <a href="#contact">總數 : {cart.totalItems}</a>
                 <a href="#contact">運費 : ${0}</a>
               </div>

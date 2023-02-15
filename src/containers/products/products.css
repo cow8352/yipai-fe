@@ -270,7 +270,7 @@ margin: 0px;
                         "Products__figure "
                         "Products__figure "
                         "Products__footer "; /* 2.區域分為4行1列 */
-    grid-template-rows: 100px 100% 50px;/* 3.各區域 寬高設置 */
+    grid-template-rows: 100px 5000px 50px;/* 3.各區域 寬高設置 */
     grid-template-columns: 100vw;
     justify-content: center;
   }
@@ -326,12 +326,11 @@ margin: 0px;
   }
 
   .Products__card-img-top{
-      height: 100%;
+      height: 30vh;
       object-fit: cover;
       object-position: 50% 50%;
 }
   .Products__figure-wrap{  
-    width: 100vw;
     margin: 0px auto;
     column-count: 1;
     /*欄數*/

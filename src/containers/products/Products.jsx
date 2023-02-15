@@ -65,7 +65,7 @@ function Products  ()  {
       setSelectedWork_hue([])
       //清空Width
       setSelectedWidth([])
-      //清空Height
+      //清空Hegiht
       setSelectedHeight([])
       //清空價格
       setSelectedPrice([])
@@ -169,7 +169,7 @@ function Products  ()  {
   let Productsfilter = [...originalProduct]
   }
 
-// 處理Height區間選項
+// 處理Hegiht區間選項
 const handleHeightRange = (value, type) => {
     
   let Productsfilter = [...originalProduct]
@@ -180,7 +180,7 @@ const handleHeightRange = (value, type) => {
         return  product.height >= 50 && product.height <= 99
       })
     console.log(Productsfilter)
-    console.log('Height：', value)
+    console.log('Hegiht：', value)
       break
     case '100':
       Productsfilter = Productsfilter.filter((product) => {
