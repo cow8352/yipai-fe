@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, Outlet } from "react-router-dom";
 import UMayBeLike from "../../components/uMaybeLike/UMayBeLike";
 import axios from "axios";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -9,6 +9,7 @@ import "./cartPart2.css";
 import ListItemsWithHook from "./pages/ShoppingCart/components/ListItemsWithHook";
 import { useCart } from "./utils/useCart";
 import BuyerLogin from "../users/login/Login";
+import CartTotal from "./CartTotal";
 
 const CartPart2 = () => {
   const shuffleArray = (array) => {
@@ -65,6 +66,9 @@ const CartPart2 = () => {
   const [memberItems, setMemberItems] = useState("");
   const [memberItemsPrice, setMemberItemsPrice] = useState("");
   const [handleSubmit, setHandleSubmit] = useState([]);
+  const [coupon, setCoupon] = useState();
+  const [useCoupon, setUseCoupon] = useState();  
+  
 
   useEffect(() => {
     function orderIdFor(item) {
@@ -154,6 +158,21 @@ const CartPart2 = () => {
       navigate("/cart/CartPart3");
     }, 100);
   }
+  
+   //coupon
+   useEffect(() => {
+ 
+    // 在component初始化的時後跑一次
+    // 通常會把去跟後端要資料的動作放這裡
+    async function getCoupon() {
+      let response = await axios.get(`http://localhost:3001/userCoupon`, {
+        withCredentials: true, });
+      setCoupon(response.data);
+    }
+    getCoupon();
+
+  }, []);
+
 
   return (
     <div id="login">
@@ -216,18 +235,20 @@ const CartPart2 = () => {
             <ListItemsWithHook />
             <UMayBeLike />
 
-            <footer class="footer-floor1">
+            {/* <footer class="footer-floor1">
               <div>
                 <a href="#news">結帳資訊 : </a>
               </div>
-              <div>
-                <a href="#contact">優惠券 : {0}</a>
-                <a href="#contact">總數 : {cart.totalItems}</a>
-                <a href="#contact">運費 : ${0}</a>
-              </div>
+              <div className="d-flex align-items-center">
+              
+              <a href="#contact">優惠券 : <input onChange={(e)=>{ console.log(setUseCoupon(e.target.value))
+              }}/>{ useCoupon == null ? "" : -coupon?.filter((v)=>{return v.sn === useCoupon}).map((v)=>v.discount)}</a>
+              <a href="#contact">總數 : {cart.totalItems}</a>
+              <a href="#contact">運費 : ${0}</a>
+            </div>
             </footer>
             <footer class="footer-floor2">
-              <a href="#total">購物車總計 : {cart.cartTotal}</a>
+              <a href="#total">購物車總計 : {cart.cartTotal-coupon?.filter((v)=>{return v.sn === useCoupon}).map((v)=>v.discount)}</a>
               <div>
                 <Link to="../cart">
                   <button>上一頁</button>
@@ -238,7 +259,8 @@ const CartPart2 = () => {
                   </button>
                 </Link>
               </div>
-            </footer>
+            </footer> */}
+            <CartTotal/>
             <br />
             <br />
             <br />

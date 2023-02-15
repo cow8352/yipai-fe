@@ -1,8 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, Outlet } from "react-router-dom";
 import { BsCartFill } from "react-icons/bs";
 import BuyerLogin from "../users/login/Login";
-import CartTotal from "./CartTotal";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import UMayBeLike from "../../components/uMaybeLike/UMayBeLike"
@@ -18,14 +17,14 @@ import ListItemsWithHook from './pages/ShoppingCart/components/ListItemsWithHook
 
 var buyerId = true;
 
-const Cart = () => {
+const CartTotal = () => {
+  const location = useLocation();
   const [product, setProduct] = useState([]);
   const [user_order, setUserOrder] = useState([]);
   const [login, setLogin] = useState(false);
   const [selllogin, setSellLogin] = useState(false);
   const [coupon, setCoupon] = useState();
   const [useCoupon, setUseCoupon] = useState();
-
 
   useEffect(() => {
     async function getMember2() {
@@ -113,61 +112,39 @@ const Cart = () => {
 
   return (
     
-    <div id="login">
-      {/* 賣家登入 */}
-      {login ? (
-        <div className="font-family margin-50">
-          <Link to="/products" className="keepbuying-button">
-            ❮ 繼續購物
-          </Link>
-          <div className="flex-text margin-top-30">
-            <h2>
-              <BsCartFill className="iconStyle-title" />
-              我的購物車
-            </h2>
-            <h5 className="">
-              1.我的購物車 ▶
-              <span className="color-gray"> 2.付款資訊 ▶ 3.訂單成立</span>
-            </h5>
-          </div>
-          <div className="dis-re">
-      {/* 列出cart中清單 */}
-      <ListItemsWithHook />
+    <>
+        <Outlet/>
+        <footer class="footer-floor1 d-flex align-items-center">
+            <div>
+            <a href="#news">結帳資訊 : </a>
+            </div>
+            <div className="d-flex align-items-center">
             
-            <h4 className="cart__h4">您可能會喜歡 :</h4>
-
-            <UMayBeLike />
-            <br />
-            <br />
-            <br />
-
-            {/* <footer class="footer-floor1">
-              <div>
-                <a href="#news">結帳資訊 : </a>
-              </div>
-              <div className="d-flex align-items-center">
-              
-                <a href="#contact">優惠券 : <input onChange={(e)=>{ console.log(setUseCoupon(e.target.value))
-                }}/>{ useCoupon == null ? "" : -coupon?.filter((v)=>{return v.sn === useCoupon}).map((v)=>v.discount)}</a>
-                <a href="#contact">總數 : {cart.totalItems}</a>
-                <a href="#contact">運費 : ${0}</a>
-              </div>
-            </footer>
-            <footer class="footer-floor2">
-              <a href="#total">購物車總計 : {cart.cartTotal-coupon?.filter((v)=>{return v.sn === useCoupon}).map((v)=>v.discount)}</a>
-              <Link to="/cart/CartPart2">
-                <button>前往結帳頁面</button>
-              </Link>
-            </footer> */}
-            <CartTotal/>
-          </div>
-        </div>
-      ) : (
-        <BuyerLogin />
-      )}
-      ;
-    </div>
+            <a href="#contact">優惠券 : <input onChange={(e)=>{ console.log(setUseCoupon(e.target.value))
+            }} value={useCoupon}/>{ useCoupon == null ? "" : -coupon?.filter((v)=>{return v.sn === useCoupon}).map((v)=>v.discount)}</a>
+            <a href="#contact">總數 : {cart.totalItems}</a>
+            <a href="#contact">運費 : ${0}</a>
+            </div>
+        </footer>
+        <footer class="footer-floor2">
+            <a href="#total">購物車總計 : {cart.cartTotal-coupon?.filter((v)=>{return v.sn === useCoupon}).map((v)=>v.discount)}</a>
+            {location.pathname === '/cart/CartPart2' ? <div>
+            <Link to="../cart">
+                <button>上一頁</button>
+            </Link>
+            <Link to="/cart/CartPart3">
+                <button id="submitOrder">
+                前往結帳
+                </button>
+            </Link>
+            </div> : 
+            <Link to="/cart/CartPart2">
+            <button>前往結帳頁面</button>
+            </Link>
+        }
+        </footer>
+    </>
   );
 };
 
-export default Cart;
+export default CartTotal;
