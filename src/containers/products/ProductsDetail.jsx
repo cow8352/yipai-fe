@@ -319,7 +319,12 @@ const ProductsDetail = () => {
                 </p>
                 <img
                   className="ProductsDetail_img-pic"
-                  src={productsDetail.img_file}
+                  src={
+                    productsDetail.img_file.includes("http")
+                      ? productsDetail.img_file
+                      : "http://localhost:3001/public/uploads/" +
+                        productsDetail.img_file
+                  }
                   alt="img"
                 />
               </figure>
@@ -333,7 +338,12 @@ const ProductsDetail = () => {
                   <div className="col-md-6">
                     <img
                       className="ProductsDetail_Pic"
-                      src={productsDetail.img_file}
+                      src={
+                        productsDetail.img_file.includes("http")
+                          ? productsDetail.img_file
+                          : "http://localhost:3001/public/uploads/" +
+                            productsDetail.img_file
+                      }
                     />
                     <img src={demo} alt="" className="ProductsDetail_demobox" />
                   </div>
@@ -392,7 +402,12 @@ const ProductsDetail = () => {
                             >
                               <img
                                 className="ProductsDetail_pic-img"
-                                src={SelectedImg_file.img_file}
+                                src={
+                                  SelectedImg_file.img_file.includes("http")
+                                    ? SelectedImg_file.img_file
+                                    : "http://localhost:3001/public/uploads/" +
+                                      SelectedImg_file.img_file
+                                }
                               />
                               <div className="ProductsDetail__card-text">
                                 <h6 className="ProductsDetail_productId">
