@@ -141,7 +141,9 @@ function SellerHome() {
   function handleSellerPicUpload(e) {
     // file input 的值並不是存在 value 欄位裡
     setSellerPic({ ...sellerPic, photo: e.target.files[0] });
+    console.log("---------sellerPic",sellerPic)
   }
+  console.log("sellerPic Out--------",sellerPic.photo)
 
   // 送出輸入資料
   async function handleSellerPicSubmit(e) {
@@ -150,16 +152,18 @@ function SellerHome() {
     e.preventDefault();
     let formData = new FormData();
     formData.append("photo", sellerPic.photo);
+    console.log("=======================",formData);
+    console.log("sellerPic.photo================",sellerPic.photo)
     let response = await axios.post(
-      "http://localhost:3001/product",
+      "http://localhost:3001/uploadsPhoto/product",
       formData,
       {
         withCredentials: true,
       }
     );
-    console.log(response.data);
     alert("圖片上傳成功");
   }
+  
   //========================================================
   //  記錄輸入的產品
   const [productInputData, setProductInputData] = useState({

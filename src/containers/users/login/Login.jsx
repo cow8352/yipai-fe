@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 // https://www.npmjs.com/package/axios
 import axios from "axios";
@@ -11,6 +11,7 @@ import "./buyLogin.css";
 
 const Login = () => {
     const { setAuth } = useAuth()
+    const navigate = useNavigate()
 
     // 登入預設
     const [member, setMember] = useState({
@@ -37,6 +38,7 @@ const Login = () => {
         setAuth({ isAuth: true, users: response.data.member })
 
         // 跳轉
+        navigate('/users/LoginTo')
         // setTimeout(() => {
         //     window.location.assign("/users/LoginTo");
         // }, 500);
