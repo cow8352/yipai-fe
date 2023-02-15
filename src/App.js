@@ -22,6 +22,7 @@ import {
   SellRegister,
   ProductList,
 } from "./containers";
+import CartTotal from "./containers/cart/CartTotal";
 import { Brand, Navbar, ScrollToTop, NotFound } from "./components";
 import "./App.css";
 import {
@@ -117,11 +118,11 @@ function App() {
 
                       {/* 購物車部分 */}
                     
-                      <Route path="cart" element={<Cart />} />
-
-                      <Route path="/cart/CartPart2" element={<CartPart2 />} />
-
-                      <Route path="/cart/CartPart3" element={<CartPart3 />} />
+                      <Route path="cart" element={<CartTotal />}>
+                        <Route index element={<Cart />} />
+                        <Route path="CartPart2" element={<CartPart2 />} />
+                      </Route>
+                      <Route path="cart/CartPart3" element={<CartPart3 />} />          
 
                       {/* 最新消息頁面 */}
                       <Route path="news" element={<News />} />

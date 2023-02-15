@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from "react";
 import BuyBotton from "./BuyBotton";
+import buyButton from "./image/buyButton.svg";
 import {
   BuyerSettings,
   MyOrder,
@@ -18,6 +19,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { display } from "@mui/system";
 import { useAuth } from '../../components/useAuth'
+import "./login/buyLogin.css";
+
 
 function HeadImg(user) {
   const { auth } = useAuth()
@@ -31,6 +34,10 @@ function HeadImg(user) {
   let [UserImg, setUserImg] = useState([]); //記錄舊圖網址
   let { userID } = useParams();
   let { OrderDetails, setOrderDetails } = useState(null);
+  const [userlike, setUserlike] = useState([]);  
+  console.log('-*-*-*-**-*-',userlike)
+  const[like, setLike]= useState(false)
+
 
   useEffect(() => {
     // console.log('會員資料')
@@ -85,11 +92,31 @@ function HeadImg(user) {
     // 在component初始化的時後跑一次
     // 通常會把去跟後端要資料的動作放這裡
     async function getCoupon() {
-      let response = await axios.get(`http://localhost:3001/coupon`);
+      let response = await axios.get(`http://localhost:3001/userCoupon`, {
+        withCredentials: true, });
       setCoupon(response.data);
     }
     getCoupon();
   }, []);
+
+  //收藏
+  useEffect(() => {
+    async function getUserlike() {
+      let response = await axios.get(
+        `http://localhost:3001/userlike`, {
+          withCredentials: true, })
+      setUserlike(response.data)
+    }
+    getUserlike()
+  }, [userlike]);
+
+  
+    // 取消收藏
+    async function deleteLike(pid) {
+    await axios.delete(`http://localhost:3001/user_like_delete/${pid}`, {
+    withCredentials: true, })
+    setLike(false)
+  }
 
   //  記錄輸入的數值
   const [UserInputData, setUserInputData] = useState({
@@ -607,23 +634,6 @@ function HeadImg(user) {
                       </button>
                     </td>
                   </tr>
-                  {/* <tr
-                                    className='_buyLogin_tr _buyLogin_tline'
-                                    style={{ borderColor: "#CAB296" }}
-                                >
-                                    <td className='_buyLogin_RWDinvisible'>
-                                        100293931223
-                                    </td>
-                                    <td>已領取</td>
-                                    <td>10,800</td>
-                                    <td>2022/12/02</td>
-                                    <td className='_buyLogin_RWDinvisible'>2</td>
-                                    <td>
-                                        <button className='_buyLogin_tableBtn'>
-                                        複製
-                                        </button>
-                                    </td>
-                                </tr> */}
                 </tbody>
               );
             })}
@@ -749,7 +759,41 @@ function HeadImg(user) {
             }}
           >
             {/* 橫排的單個作品 */}
-            <ArtList
+            {userlike.map((v,i)=>{
+            return(
+            <div key={v.id} style={{ position: "relative" }}>
+            <div className='_buyLogin_artbox'>
+                {/* 刪除按鈕 */}
+                <button className="_buyLogin_deleteBtn"  onClick={() => {
+                            deleteLike(v.product_id)
+                            // window.location.reload()
+                            }} />
+                <img
+                    src={v.img_file}
+                    alt={v.img_file}
+                    style={{ display: "flex" }}
+                    className="userlike_img"
+                />
+                {/* 直的排列文字 */}
+                <div
+                    className='_buyLogin_flex'
+                    style={{ alignItems: "flex-start" }}
+                >
+                    <h5 className="_buyLogin_artName">{v.name}</h5>
+                    <h5 className="_buyLogin_artSize">商品尺寸：{v.width} * {v.height}</h5>
+                    <h5  className="_buyLogin_artPrice">價格：{v.price}</h5>
+                </div>
+                <BuyBotton
+                    text='購買'
+                    src={buyButton}
+                    alt='ICon'
+                    btnStyle={{ display: "flex" }}
+                    className='_buyLogin_buyerControlBtnNormal'
+                />
+            </div>
+            </div>)
+        })}
+            {/* <ArtList
               btnClass="_buyLogin_deleteBtn"
               artsImg={artsImg}
               artNameClass="_buyLogin_artName"
@@ -758,29 +802,7 @@ function HeadImg(user) {
               artsize="50X40"
               artPriceClass="_buyLogin_artPrice"
               artprice="20,000"
-            />
-            {/* 下一個作品 */}
-            <ArtList
-              btnClass="_buyLogin_deleteBtn"
-              artsImg={artsImg}
-              artNameClass="_buyLogin_artName"
-              artname="海報，放輕鬆"
-              artSizeClass="_buyLogin_artSize"
-              artsize="50X40"
-              artPriceClass="_buyLogin_artPrice"
-              artprice="20,000"
-            />
-            {/* 下一個作品 */}
-            <ArtList
-              btnClass="_buyLogin_deleteBtn"
-              artsImg={artsImg}
-              artNameClass="_buyLogin_artName"
-              artname="海報，放輕鬆"
-              artSizeClass="_buyLogin_artSize"
-              artsize="50X40"
-              artPriceClass="_buyLogin_artPrice"
-              artprice="20,000"
-            />
+            /> */}
           </div>
         </div>
       </div>

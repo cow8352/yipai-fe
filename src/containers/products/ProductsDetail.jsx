@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 import "./productsDetail.css";
 import "bootstrap";
@@ -12,6 +13,7 @@ import { Carousel } from "react-responsive-carousel";
 import axios from "axios";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useAuth } from '../../components/useAuth'
 
 // cart part
 import { useCart } from "../cart/utils/useCart";
@@ -30,7 +32,9 @@ const ProductsDetail = () => {
     minusOne,
   } = useCart();
 
+  const { product_id } = useParams()
   const [productName, setProductName] = useState("");
+  const [liked, setLiked] = useState();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleClose2 = () => setShow(false);
@@ -38,6 +42,7 @@ const ProductsDetail = () => {
   const handleShow2 = () => setShow(true);
   const navigate = useNavigate();
   const [login, setLogin] = useState(false);
+  const { auth } = useAuth()
   useEffect(() => {
     async function getMember2() {
       let response = await axios.get(
@@ -71,6 +76,43 @@ const ProductsDetail = () => {
     }
     getMember2();
   }, []);
+
+  // useEffect(() => {
+  //   const user_id = auth.users_id
+  //   async function getMember2() {
+  //     let response = await axios.get(
+  //       `http://localhost:3001/users/user_like_add`,
+  //       {
+  //         withCredentials: true,
+  //         product_id,
+  //         user_id,
+  //       }
+  //     );
+
+  //     setLiked(response.data[0]);
+  //     console.log(response.data[0]);
+  //   }
+  //   getMember2();
+  // }, []);
+
+    //加入收藏
+    async function addLike(pid) {
+      await axios.post(
+        `http://localhost:3001/users/user_like_add`,
+        { product_id: pid },
+        { withCredentials: true }
+      )
+  
+      setLiked(true)
+    }
+    // 取消收藏
+    async function deleteLike(pid) {
+      await axios.delete(`http://localhost:3001/user_like_delete/${pid}`, {
+        withCredentials: true,
+      })
+  
+      setLiked(false)
+    }
 
   const showModal = (name) => {
     setProductName("產品：" + name + "已成功加入購物車");
@@ -161,6 +203,7 @@ const ProductsDetail = () => {
         `http://localhost:3001/product/${productId}?`
       );
       setData(response.data);
+      // console.log("---------", response.data[0]);
     }
     getData();
   }, []);
@@ -279,36 +322,70 @@ const ProductsDetail = () => {
                   <h1 className="ProductsDetail_price_item d-flex">
                     ${productsDetail.price}
                   </h1>
-                  <div className="ProductsDetail_addCar ">
-                    {login ? (
-                      <button
-                        className="ProductsDetail_addCar-button d-inline"
-                        onClick={() => {
-                          // 商品原本無數量屬性(quantity)，要先加上
-                          const item = { ...productsDetail, quantity: 1 };
-                          // 注意: 重覆加入會自動+1產品數量
-                          addItem(item);
-                          // 呈現跳出對話盒
-                          showModal(productsDetail.name);
-                        }}
-                      >
-                        加入購物車
-                      </button>
-                    ) : (
-                      <button
-                        className="ProductsDetail_addCar-button d-inline"
-                        onClick={() => {
-                          // 商品原本無數量屬性(quantity)，要先加上
-                          const item = {};
-                          // 注意: 重覆加入會自動+1產品數量
-                          removeItem(item);
-                          // 呈現跳出對話盒
-                          showModalFail("請登入!");
-                        }}
-                      >
-                        加入購物車
-                      </button>
-                    )}
+                  <div className="d-flex align-items-center">
+                    <div className="ProductsDetail_addCar ">
+                      {login ? (
+                        <button
+                          className="ProductsDetail_addCar-button d-inline"
+                          onClick={() => {
+                            // 商品原本無數量屬性(quantity)，要先加上
+                            const item = { ...productsDetail, quantity: 1 };
+                            // 注意: 重覆加入會自動+1產品數量
+                            addItem(item);
+                            // 呈現跳出對話盒
+                            showModal(productsDetail.name);
+                          }}
+                        >
+                          加入購物車
+                        </button>
+                      ) : (
+                        <button
+                          className="ProductsDetail_addCar-button d-inline"
+                          onClick={() => {
+                            // 商品原本無數量屬性(quantity)，要先加上
+                            const item = {};
+                            // 注意: 重覆加入會自動+1產品數量
+                            removeItem(item);
+                            // 呈現跳出對話盒
+                            showModalFail("請登入!");
+                          }}
+                        >
+                          加入購物車
+                        </button>
+                      )}
+                    </div>
+                    <div className="mx-3">
+                     <div className="collect">
+                      {auth.isAuth ? (
+                        <div>
+                          {liked ? (
+                            <FaHeart
+                              className="collect_fill_icon"
+                              onClick={() => {
+                                deleteLike(productsDetail.id)
+                              }}
+                            />
+                          ) : (
+                            <FaRegHeart
+                              name="product_id"
+                              className="collect_icon"
+                              onClick={() => {
+                                addLike(productsDetail.id)
+                              }}
+                            />
+                          )}
+                        </div>
+                      ) : (
+                        <div className="collect_btn">
+                          <FaRegHeart
+                            name="product_id"
+                            className="collect_icon"
+                          />
+                        </div>
+                      )}                 
+                    </div>
+                    </div>
+
                   </div>
                 </div>
               </hgroup>
