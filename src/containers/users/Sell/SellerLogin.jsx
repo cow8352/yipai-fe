@@ -9,8 +9,8 @@ import SellerHome from "./SellerHome";
 const SellLogin = () => {
     // 登入預設
     const [member, setMember] = useState({
-        account: "courchia112",
-        password: "827ccb0eea8a706c4c34a16891f84e7b",
+        account: "",
+        password: "",
     });
 
     function handleChange(e) {

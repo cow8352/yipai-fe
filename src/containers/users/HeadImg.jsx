@@ -542,7 +542,7 @@ function HeadImg(user) {
                 >
                   <td>{User_Order.order_id}</td>
                   <td>{User_Order.total}</td>
-                  <td>{moment(User_Order.order_date).format()}</td>
+                  <td>{User_Order.order_date.slice(0, 10)}</td>
                   <td>{User_Order.amount}</td>
                   {/* <td>
                     <button
@@ -656,7 +656,7 @@ function HeadImg(user) {
                     <td className="_buyLogin_RWDinvisible">{coupons.sn}</td>
                     <td>{couponsStatusMap[coupons.status]}</td>
                     <td>{coupons.discount}</td>
-                    <td>{coupons.end_time}</td>
+                    <td>{coupons.end_time.slice(0, 10)}</td>
                     {/* <td className='_buyLogin_RWDinvisible'>3</td> */}
                     <td>
                       <button

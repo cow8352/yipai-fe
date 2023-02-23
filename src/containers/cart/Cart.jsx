@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import { BsCartFill } from "react-icons/bs";
 import BuyerLogin from "../users/login/Login";
 import CartTotal from "./CartTotal";
@@ -25,7 +25,7 @@ const Cart = () => {
   const [selllogin, setSellLogin] = useState(false);
   const [coupon, setCoupon] = useState();
   const [useCoupon, setUseCoupon] = useState();
-
+const navigate=useNavigate()
 
   useEffect(() => {
     async function getMember2() {
@@ -45,7 +45,12 @@ const Cart = () => {
       console.log(response.data[0].users_valid_role);
     }
     getMember2();
+    
+   
   }, []);
+ 
+ 
+
   // useEffect(() => {
   //   async function getSellLogin() {
   //     let response = await axios.get(

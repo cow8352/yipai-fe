@@ -284,7 +284,8 @@ padding-top: 20px;
   }
 #SellerProduct__main{
     width: 50vw;
-    margin-top: 100px;
+    margin-top: 50px;
+   overflow: scroll;
 }  
 
 .SellerProduct__aside-list{
@@ -416,11 +417,13 @@ padding-top: 20px;
 }
 /* SellerProduct 頁面*/
 #SellerProduct__main{
+    width: 60vw;
     margin-top: 20px;
+    height: 73vh;
 }  
 .SellerProduct__main_container{
     display: flex;
-    width: 50vw;
+
 }
 .SellerProduct__section{
     margin: 0,auto;

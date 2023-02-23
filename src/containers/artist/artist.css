@@ -12,6 +12,9 @@
   height: auto;
   margin-top: 10px;
 }
+.artist-card-img{
+  padding-right: 5px;
+}
 
 .artist-aside-menu {
   width: 30vw;
@@ -93,9 +96,21 @@
 }
 
 @media screen and (max-width: 550px) {
+  
+  .position-relative{
+
+    width:100vw;
+  }
+  .artist-container{
+    display: flex;
+    align-items: center;
+  }
+
   .artist-main-content {
+ 
     display: inline-block;
     height: auto;
+    width:100vw;
   }
   
   .artist-aside-menu {
@@ -103,8 +118,8 @@
   }
   .artist-card-img-top {
     background-size: cover;
-    width: 400px;
-    height: 220px;
+    width: 200px;
+    height: 180px;
   }
   .button-new-old{
     display: none;

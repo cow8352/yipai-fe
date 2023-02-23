@@ -162,7 +162,7 @@ function Artist() {
               Clear
             </Button>
           </nav>
-          <main>
+          <main className='artist-main'>
             <div className="d-flex justify-content-between m-2 ">
               <div className="col1 text-nowrap d-inline-flex">
                 <Link to="/" className="text-nowrap">
@@ -189,7 +189,7 @@ function Artist() {
                   <div className="artist-card mb-5 box-shadow px-3 justify-content-center">
                     {currentPosts.map((users, index) => {
                       return (
-                        <div key={users.users_id} className="px-3">
+                        <div key={users.users_id} className="artist-card-img">
                           <Link to={`/artist/${users.users_id}`}>
                             <div className="position-relative px-3 py-5 shadow p-3 mb-5 artist-background rounded">
                               <img

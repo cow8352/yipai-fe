@@ -382,7 +382,7 @@ function SellerHome() {
                     ></input>
                   </label>
                 </div>
-              </div>
+
               {image === "" ? (
                 ""
               ) : (
@@ -390,8 +390,14 @@ function SellerHome() {
                   src={`http://localhost:3001/public/uploads/${image.name}`}
                   alt={image.name}
                   className=""
+                  style={{
+                            margin:"0 0 0 20px",
+                            width: "160px",
+                            height:"160px",
+                          }}
                 />
               )}
+              </div>
               <div className="SellerUpload__detail">
                 <div className="SellerUpload__name">
                   <div

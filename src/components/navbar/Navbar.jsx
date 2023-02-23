@@ -29,7 +29,7 @@ const Navbar = () => {
   const [product, setProduct] = useState([]);
   const [user_order, setUserOrder] = useState([]);
   const [toggleMenu, setToggleMenu] = useState(false);
-  const [MerberId,setMemberId]=useState('');
+  const [MemberId,setMemberId]=useState('');
 
   useEffect(() => {
     async function getMember2() {
@@ -114,7 +114,7 @@ const Navbar = () => {
           ) : (
             <>
             
-                <h6>Hi ! {MerberId === 0?<a href="/users/LoginTo"> {UserName.users_name}</a>:<a href="/users/ArtistLoginTo"> {UserName.users_name}</a>}</h6>
+                <h6>Hi ! {MemberId==0?<a href="/users/LoginTo"> {UserName.users_name}</a>:<a href="/users/ArtistLoginTo"> {UserName.users_name}</a>}</h6>
                 
   
 
