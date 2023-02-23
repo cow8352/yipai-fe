@@ -12,9 +12,12 @@
   height: auto;
   margin-top: 10px;
 }
+<<<<<<< HEAD
 .artist-card-img{
   padding-right: 15px;
 }
+=======
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
 
 .artist-aside-menu {
   width: 30vw;
@@ -99,11 +102,14 @@
   .artist-main-content {
     display: inline-block;
     height: auto;
+<<<<<<< HEAD
     width:100vw;
   }
   .artist-main-content {
     display: inline-block;
     height: auto;
+=======
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
   }
   
   .artist-aside-menu {

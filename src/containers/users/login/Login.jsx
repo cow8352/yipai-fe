@@ -1,13 +1,28 @@
 import React from "react";
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
+=======
+import { Link, useNavigate } from "react-router-dom";
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
 import { useState } from "react";
 // https://www.npmjs.com/package/axios
 import axios from "axios";
 import { HeadImg } from "../HeadImg";
+<<<<<<< HEAD
+=======
+import { useAuth } from "../../../components/useAuth";
+
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
 
 import "./buyLogin.css";
 
 const Login = () => {
+<<<<<<< HEAD
+=======
+    const { setAuth } = useAuth()
+    const navigate = useNavigate()
+
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
     // 登入預設
     const [member, setMember] = useState({
         account: "",
@@ -28,12 +43,24 @@ const Login = () => {
                 withCredentials: true,
             }
         );
+<<<<<<< HEAD
         console.log(response.data);      
         alert("登入成功");
         // 跳轉
         setTimeout(() => {
             window.location.assign("/users/LoginTo");
         }, 500);
+=======
+        console.log('users:',response.data.member);      
+        alert("登入成功");
+        setAuth({ isAuth: true, users: response.data.member })
+
+        // 跳轉
+        navigate('/users/LoginTo')
+        // setTimeout(() => {
+        //     window.location.assign("/users/LoginTo");
+        // }, 500);
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
         }catch(err){
             alert("登入失敗");
             setTimeout(() => {

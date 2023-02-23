@@ -17,8 +17,17 @@ import artsImg from "./image/artsImg.png";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { display } from "@mui/system";
+<<<<<<< HEAD
 
 function HeadImg(user) {
+=======
+import { useAuth } from '../../components/useAuth'
+
+function HeadImg(user) {
+  const { auth } = useAuth()
+  const [users, setUsers] = useState([])
+
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
   let [UserData, setUserData] = useState({}); //記錄數值
   let [UserOldDatas, setUserOldDatas] = useState({}); //原本的數據
   let [UserOrders, setUserOrders] = useState([]); //記錄使用者訂單
@@ -28,6 +37,24 @@ function HeadImg(user) {
   let { userID } = useParams();
   let { OrderDetails, setOrderDetails } = useState(null);
 
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    // console.log('會員資料')
+    async function getUsers() {
+      let response = await axios.get(
+        `http://localhost:3001/users/${auth.users_id}`,
+        {
+          withCredentials: true,
+        }
+      )
+      setUsers(response.data)
+    }
+    getUsers()
+  }, [auth.users_id])
+
+
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
   // 只執行一次
   useEffect(() => {
     async function getMember2() {
@@ -170,7 +197,11 @@ function HeadImg(user) {
     <div className="_buyLogin_flex">
       <div className="_buyLogin_RWDflexcol _buyLogin_rwd_flex">
         <div className="_buyLogin_flex-re" style={{ marginTop: "1em" }}>
+<<<<<<< HEAD
           {/* <img
+=======
+          <img
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
             src={
               UserOldDatas &&
               UserOldDatas.user_imageHead &&
@@ -181,12 +212,34 @@ function HeadImg(user) {
             }
             alt="buyHead"
             className="_buyLogin_headImg"
+<<<<<<< HEAD
           /> */}
           
           
         </div>
 
         <h3 className="m-5">
+=======
+          />
+          <div className="d-flex">
+          <label className='_buyLogin_headIcon'>
+                        {/* 增加檔案 */}
+                        <div>
+                            <input
+                                type='file'
+                                id='imageHead'
+                                name='imageHead'
+                                style={{ display: "none" }}
+                                // value={imgServerUrl}
+                                onChange={handleUpload}
+                            ></input>
+                        </div>
+                    </label>
+          <button className="_buyLogin_headIcon_Button" onClick={handleProductSubmit}>送出</button>
+        </div>
+        </div>
+        <h3>
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
           您好
           <span>{UserOldDatas.users_name}</span>
           <span>你現在是</span>
@@ -409,7 +462,11 @@ function HeadImg(user) {
                     <button
                       className="_buyLogin_tableBtn"
                       onClick={function Detial() {
+<<<<<<< HEAD
                         setOrderDetails( User_Order);
+=======
+                        OrderDetails = User_Order;
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
                         console.log(OrderDetails);
                       }}
                     >
@@ -421,6 +478,10 @@ function HeadImg(user) {
             </tbody>
           </table>
           <div>
+<<<<<<< HEAD
+=======
+          <h2>132</h2>
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
             {OrderDetails && (
               <div>
                 <table className="_buyLogin_table">

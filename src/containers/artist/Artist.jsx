@@ -189,7 +189,11 @@ function Artist() {
                   <div className="artist-card mb-5 box-shadow px-3 justify-content-center">
                     {currentPosts.map((users, index) => {
                       return (
+<<<<<<< HEAD
                         <div key={users.users_id} className="artist-card-img">
+=======
+                        <div key={users.users_id} className="px-3">
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
                           <Link to={`/artist/${users.users_id}`}>
                             <div className="position-relative px-3 py-5 shadow p-3 mb-5 artist-background rounded">
                               <img

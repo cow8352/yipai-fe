@@ -319,7 +319,16 @@ const ProductsDetail = () => {
                 </p>
                 <img
                   className="ProductsDetail_img-pic"
+<<<<<<< HEAD
                   src={productsDetail.img_file}
+=======
+                  src={
+                    productsDetail.img_file.includes("http")
+                      ? productsDetail.img_file
+                      : "http://localhost:3001/public/uploads/" +
+                        productsDetail.img_file
+                  }
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
                   alt="img"
                 />
               </figure>
@@ -333,7 +342,16 @@ const ProductsDetail = () => {
                   <div className="col-md-6">
                     <img
                       className="ProductsDetail_Pic"
+<<<<<<< HEAD
                       src={productsDetail.img_file}
+=======
+                      src={
+                        productsDetail.img_file.includes("http")
+                          ? productsDetail.img_file
+                          : "http://localhost:3001/public/uploads/" +
+                            productsDetail.img_file
+                      }
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
                     />
                     <img src={demo} alt="" className="ProductsDetail_demobox" />
                   </div>
@@ -392,7 +410,16 @@ const ProductsDetail = () => {
                             >
                               <img
                                 className="ProductsDetail_pic-img"
+<<<<<<< HEAD
                                 src={SelectedImg_file.img_file}
+=======
+                                src={
+                                  SelectedImg_file.img_file.includes("http")
+                                    ? SelectedImg_file.img_file
+                                    : "http://localhost:3001/public/uploads/" +
+                                      SelectedImg_file.img_file
+                                }
+>>>>>>> 10b7a3bc046377311d2cf79520a6932966b20a17
                               />
                               <div className="ProductsDetail__card-text">
                                 <h6 className="ProductsDetail_productId">
